@@ -1,0 +1,15 @@
+package ru.chulkova.restaurantvoting.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Meal {
+
+    private int price;
+
+    private Restaurant restaurant;
+}
