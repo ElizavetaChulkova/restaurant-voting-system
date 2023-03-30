@@ -1,22 +1,22 @@
 package ru.chulkova.restaurantvoting.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString(callSuper = true, exclude = {"password"})
-public class User extends AbstractPersistable<Integer> {
+public class User extends BaseEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email

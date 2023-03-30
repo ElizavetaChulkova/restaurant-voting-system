@@ -1,33 +1,27 @@
 package ru.chulkova.restaurantvoting.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDate;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurant", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name", name = "restaurant_name_idx")})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Restaurant extends AbstractPersistable<Integer> {
+public class Restaurant extends BaseEntity {
 
     @Column(name = "name")
     @Size(max = 128)
     private String name;
 
-    @Column(name = "menu")
-    @CollectionTable(name = "meal",
-            joinColumns = @JoinColumn(name = "restaurant_id"))
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantId")
     private List<Meal> menu;
-
-    @Column(name = "date")
-    @NotNull
-    private LocalDate date;
 }

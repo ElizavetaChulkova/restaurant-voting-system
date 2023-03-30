@@ -1,12 +1,11 @@
 package ru.chulkova.restaurantvoting.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,19 +15,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class Vote extends AbstractPersistable<Integer> {
+public class Vote extends BaseEntity {
 
     @Column(name = "date_time")
     @NotNull
     private LocalDateTime voteDateTime;
 
     @JoinColumn(name = "user_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private Integer userId;
 
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Restaurant restaurant;
+    private Integer restaurantId;
 }
