@@ -11,7 +11,10 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "meal")
+@Table(name = "meal", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"restaurant_id", "dish_name", "menu_date"},
+                name = "one_unique_menu_per_day_idx")
+})
 @Getter
 @Setter
 @NoArgsConstructor

@@ -7,9 +7,13 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
-@Table(name = "vote")
+@Table(name = "vote", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "date_time"},
+        name = "one_user_vote_per_day_idx")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,4 +34,6 @@ public class Vote extends BaseEntity {
 //    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Integer restaurantId;
+
+    public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
 }
