@@ -1,20 +1,21 @@
 package ru.chulkova.restaurantvoting.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.chulkova.restaurantvoting.model.User;
-
-import java.util.Optional;
+import ru.chulkova.restaurantvoting.model.Meal;
 
 @Transactional(readOnly = true)
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface MealRepository extends JpaRepository<Meal, Integer> {
 
     @Override
     @Transactional
-    User save(User user);
+    Meal save(Meal meal);
 
-    @Query("SELECT u FROM User u WHERE u.email = LOWER(:email)")
-    Optional<User> getByEmail(@Param("email") String email);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Meal m WHERE m.id=:id")
+    int delete(@Param("id") int id);
 }

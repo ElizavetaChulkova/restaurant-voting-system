@@ -4,17 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.chulkova.restaurantvoting.model.User;
+import ru.chulkova.restaurantvoting.model.Vote;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface VoteRepository extends JpaRepository<Vote, Integer> {
 
-    @Override
     @Transactional
-    User save(User user);
+    Vote save(Vote vote);
 
-    @Query("SELECT u FROM User u WHERE u.email = LOWER(:email)")
-    Optional<User> getByEmail(@Param("email") String email);
+    @Query("SELECT v FROM Vote v WHERE v.userId=:userId and v.voteDateTime=:date")
+    Optional<Vote> getVoteByDate(@Param("userId") int userId, @Param("date") LocalDate date);
 }
