@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true)
 public class Meal extends BaseEntity {
 
     @Column(name = "price")
@@ -33,14 +32,15 @@ public class Meal extends BaseEntity {
     @NotNull
     private LocalDate menuDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    private Integer restaurantId;
+    private Restaurant restaurant;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "restaurant_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonBackReference
-//    private Restaurant restaurant;
+    @Override
+    public String toString() {
+        return "Dish{" + "name='" + dishName + '\'' + ", date=" + menuDate + ", price=" + price + ", restaurant="
+                + restaurant + '}';
+    }
 }

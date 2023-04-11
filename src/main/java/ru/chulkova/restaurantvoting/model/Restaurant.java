@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Restaurant extends BaseEntity {
 
     @Column(name = "name")
@@ -24,7 +23,12 @@ public class Restaurant extends BaseEntity {
     private String name;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurantId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonManagedReference
     private List<Meal> menu;
+
+    @Override
+    public String toString() {
+        return "Restaurant [name=" + name + "]";
+    }
 }

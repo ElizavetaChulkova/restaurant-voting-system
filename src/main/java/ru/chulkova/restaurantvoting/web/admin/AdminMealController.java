@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.chulkova.restaurantvoting.model.Meal;
 import ru.chulkova.restaurantvoting.repository.MealRepository;
+import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.to.MealTo;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class AdminMealController {
 
     private final MealRepository mealRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @GetMapping(value = "/meals", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getAll() {
@@ -42,7 +44,7 @@ public class AdminMealController {
     public ResponseEntity<MealTo> create(@Valid @RequestBody Meal meal, @PathVariable("id") int restId) {
         ValidationUtil.checkNew(meal);
         log.info("create new meal {} for restaurant {}", meal, restId);
-        meal.setRestaurantId(restId);
+        meal.setRestaurant(restaurantRepository.findById(restId).orElse(null));
         mealRepository.save(meal);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/admin/restaurants/{id}/meals")
