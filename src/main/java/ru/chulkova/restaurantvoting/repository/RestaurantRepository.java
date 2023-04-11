@@ -1,9 +1,11 @@
 package ru.chulkova.restaurantvoting.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.transaction.annotation.Transactional;
 import ru.chulkova.restaurantvoting.model.Restaurant;
 
@@ -17,8 +19,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @Query("DELETE FROM Restaurant r WHERE r.id=:id")
     int delete(@Param("id") int id);
 
-    @Query("SELECT DISTINCT r FROM Restaurant r JOIN FETCH r.menu ORDER BY r.name")
-    List<Restaurant> getWithMeals();
+    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r ORDER BY r.name")
+    List<Restaurant> getAllWithMeals();
 
     @Override
     @Transactional
@@ -26,4 +29,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAll();
+
+    @Query("SELECT r.name FROM Restaurant r WHERE r.id=:id")
+    String getRestaurantNameById(@Param("id") int restId);
 }
