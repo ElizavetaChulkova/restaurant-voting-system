@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -11,10 +12,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "meal", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"restaurant_id", "dish_name", "menu_date"},
-                name = "one_unique_menu_per_day_idx")
-})
+@Table(name = "meal")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,7 +34,13 @@ public class Meal extends BaseEntity {
     private LocalDate menuDate;
 
     @JoinColumn(name = "restaurant_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private Integer restaurantId;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "restaurant_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JsonBackReference
+//    private Restaurant restaurant;
 }
