@@ -30,6 +30,7 @@ public class Meal extends BaseEntity {
 
     @Column(name = "dish_name")
     @Size(max = 128)
+    @NotNull
     private String dishName;
 
     @Column(name = "menu_date")
@@ -40,6 +41,7 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
+    @NotNull
     private Restaurant restaurant;
 
     @Override

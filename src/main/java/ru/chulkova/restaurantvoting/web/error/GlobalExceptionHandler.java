@@ -12,7 +12,6 @@ import ru.chulkova.restaurantvoting.error.AppException;
 
 import java.util.Map;
 
-
 @RestControllerAdvice
 @AllArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {

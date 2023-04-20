@@ -34,7 +34,8 @@ public class VoteController {
             service.createOrUpdate(authUser.id(), restId);
             return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
         } catch (UnsupportedOperationException e) {
-            return new ResponseEntity<>(voteTo, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(service.getUserVoteByDate(authUser.id(),
+                    newVote.getVoteDate()), HttpStatus.FORBIDDEN);
         }
     }
 

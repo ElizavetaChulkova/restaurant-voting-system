@@ -11,6 +11,7 @@ import ru.chulkova.restaurantvoting.util.JsonDeserializers;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Set;
@@ -28,15 +29,16 @@ public class User extends BaseEntity implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotEmpty
-    @Size(max = 128)
+    @Size(min = 5, max = 128)
     private String email;
 
     @Column(name = "name")
-    @Size(max = 128)
+    @Size(min = 2, max = 128)
     private String name;
 
     @Column(name = "password")
     @Size(max = 256)
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
     private String password;

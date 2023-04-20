@@ -1,8 +1,12 @@
 package ru.chulkova.restaurantvoting.util;
 
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.lang.NonNull;
 import ru.chulkova.restaurantvoting.model.BaseEntity;
 
+@Slf4j
 public class ValidationUtil {
 
     public static <T> T checkNotFoundWithId(T object, int id) throws NotFoundException {
@@ -38,5 +42,12 @@ public class ValidationUtil {
         } else if (entity.id() != id) {
             throw new IllegalArgumentException(entity.getClass().getSimpleName() + " must has id=" + id);
         }
+    }
+
+    //  https://stackoverflow.com/a/65442410/548473
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }

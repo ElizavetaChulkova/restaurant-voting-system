@@ -20,6 +20,8 @@ import java.time.LocalTime;
 @ToString(callSuper = true)
 public class Vote extends BaseEntity {
 
+    public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
+
     @Column(name = "vote_date", columnDefinition = "timestamp default CURRENT_DATE")
     @NotNull
     private LocalDate voteDate;
@@ -32,11 +34,11 @@ public class Vote extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
 //    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
     private Integer userId;
 
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
     private Integer restaurantId;
-
-    public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
 }
