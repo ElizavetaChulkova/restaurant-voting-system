@@ -3,6 +3,7 @@ package ru.chulkova.restaurantvoting.to;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
+import ru.chulkova.restaurantvoting.model.BaseEntity;
 import ru.chulkova.restaurantvoting.model.Meal;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @ToString
-public class MealTo {
+public class MealTo extends BaseEntity {
 
     private int price;
 
