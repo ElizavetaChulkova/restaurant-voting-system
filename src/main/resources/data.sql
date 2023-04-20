@@ -14,9 +14,9 @@ VALUES ( 'BURO' ),
 
 INSERT INTO MEAL (DISH_NAME, MENU_DATE, PRICE, RESTAURANT_ID)
 VALUES ('meat balls', CURRENT_DATE, 500, 1),
-       ('shrimps carry', CURRENT_DATE, 800, 1),
+       ('shrimps carry', '2023-04-18', 800, 1),
        ('carbonara', CURRENT_DATE, 650, 2),
-       ('grilled bri with mango sauce', CURRENT_DATE, 500, 2),
+       ('grilled bri with mango sauce', '2023-04-18', 500, 2),
        ('best cocktail', CURRENT_DATE, 600, 3);
 
 INSERT INTO VOTE (VOTE_DATE, VOTE_TIME, RESTAURANT_ID, USER_ID)
