@@ -257,7 +257,7 @@ Authorization: Basic admin@javaops.ru admin
 
 ###
 
-PUT http://localhost:8080/api/admin/meals/2
+PUT http://localhost:8080/api/admin/restaurants/meals/2
 Content-Type: application/json
 Authorization: Basic admin@javaops.ru admin
 
