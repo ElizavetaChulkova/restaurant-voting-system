@@ -29,14 +29,15 @@ public class AdminRestaurantController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestaurantTo get(@PathVariable("id") int id) {
-        log.info("getAll restaurants {}", repository.findById(id));
+        log.info("get restaurant {} by id= {}", repository.findById(id), id);
         return RestaurantTo.getTo(repository.findById(id).orElseThrow());
     }
 
     @GetMapping
     public ResponseEntity<List<RestaurantTo>> getAll(){
-        log.info("get all restaurants {}");
-        return new ResponseEntity<>(RestaurantTo.getTos(repository.getAll()), HttpStatus.OK);
+        List<RestaurantTo> rests = RestaurantTo.getTos(repository.getAll());
+        log.info("get all restaurants {}", rests);
+        return new ResponseEntity<>(rests, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

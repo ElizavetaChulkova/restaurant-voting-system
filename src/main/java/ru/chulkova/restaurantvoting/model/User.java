@@ -3,6 +3,8 @@ package ru.chulkova.restaurantvoting.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.StringUtils;
 import ru.chulkova.restaurantvoting.util.JsonDeserializers;
 
@@ -44,6 +46,8 @@ public class User extends BaseEntity implements Serializable {
     @CollectionTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"))
     @ElementCollection(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn
     private Set<Role> roles;
 
     public void setEmail(String email) {
