@@ -33,7 +33,7 @@ public class VoteService {
         List<Vote> userVotes = voteRepo.getAllUserVotes(userId);
         log.info("getAllUserVotes: userId = {}", userId);
         return userVotes.stream()
-                .map(vote -> new VoteTo(restRepo.getRestaurantNameById(vote.getRestaurantId()),
+                .map(vote -> new VoteTo( vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
                         LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime())))
                 .toList();
     }
@@ -60,7 +60,7 @@ public class VoteService {
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(restRepo.getRestaurantNameById(vote.getRestaurantId()),
+        return new VoteTo(vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 

@@ -11,14 +11,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @ToString
-public class MealTo extends BaseEntity {
+public class MealTo {
+
+    private Integer id;
 
     private int price;
 
     private String dishName;
 
     public static MealTo getTo(Meal meal) {
-        return new MealTo(meal.getPrice(), meal.getDishName());
+        return new MealTo(meal.getId(), meal.getPrice(), meal.getDishName());
     }
 
     public static List<MealTo> getTos(List<Meal> meals) {
