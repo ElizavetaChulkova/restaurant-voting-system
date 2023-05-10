@@ -15,12 +15,13 @@ import ru.chulkova.restaurantvoting.web.AuthUser;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/api/account")
+@RequestMapping(value = AccountController.URL)
 @Slf4j
 @AllArgsConstructor
 @Tag(name = "Account Controller")
 public class AccountController {
 
+    public static final String URL = "/api/account";
     private final UserRepository repository;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,7 +34,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete {}", authUser);
-        repository.delete(authUser.id());
+        repository.deleteById(authUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

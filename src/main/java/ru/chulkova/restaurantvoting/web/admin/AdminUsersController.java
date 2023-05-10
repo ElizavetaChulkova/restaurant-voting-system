@@ -26,6 +26,7 @@ import java.util.List;
 @Tag(name = "Admin Users Controller")
 public class AdminUsersController {
 
+    public static final String ADMIN_USERS_URL = "/api/admin/users";
     private UserRepository repository;
     private UserService service;
 
@@ -37,9 +38,15 @@ public class AdminUsersController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserTo get(@PathVariable("id") int id) {
+    public UserTo get(@PathVariable("id") Integer id) {
         log.info("get user {} by id= {}", repository.findById(id), id);
         return UserTo.getTo(repository.findById(id).orElseThrow());
+    }
+
+    @GetMapping(value = "by-email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserTo getByEmail(@PathVariable("email") String email) {
+        log.info("get user {} by email= {}", repository.getByEmail(email), email);
+        return UserTo.getTo(repository.getByEmail(email).orElseThrow());
     }
 
     @DeleteMapping(value = "/{id}")

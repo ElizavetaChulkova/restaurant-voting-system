@@ -26,6 +26,7 @@ import java.util.List;
 @Tag(name = "Admin Restaurant Controller")
 public class AdminRestaurantController {
 
+    public static final String ADMIN_REST_URL = "/api/admin/restaurants";
     private final RestaurantRepository repository;
     private final RestaurantService service;
 
@@ -36,7 +37,7 @@ public class AdminRestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RestaurantTo>> getAll(){
+    public ResponseEntity<List<RestaurantTo>> getAll() {
         List<RestaurantTo> rests = RestaurantTo.getTos(repository.getAll());
         log.info("get all restaurants {}", rests);
         return new ResponseEntity<>(rests, HttpStatus.OK);

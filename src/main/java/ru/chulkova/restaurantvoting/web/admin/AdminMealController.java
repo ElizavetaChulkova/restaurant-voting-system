@@ -27,6 +27,7 @@ import java.util.List;
 @Tag(name = "Admin Meal Controller")
 public class AdminMealController {
 
+    public static final String ADMIN_MEAL_URL = "/api/admin/restaurants";
     private final MealRepository mealRepository;
     private final MealService service;
     private final RestaurantRepository restaurantRepository;
