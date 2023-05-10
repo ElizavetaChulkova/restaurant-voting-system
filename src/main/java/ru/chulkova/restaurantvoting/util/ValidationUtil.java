@@ -1,11 +1,13 @@
 package ru.chulkova.restaurantvoting.util;
 
 import javassist.NotFoundException;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import ru.chulkova.restaurantvoting.model.BaseEntity;
 
+@UtilityClass
 @Slf4j
 public class ValidationUtil {
 
