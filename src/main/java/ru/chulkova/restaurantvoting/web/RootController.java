@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.web;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.Set;
 @RequestMapping(value = "/api/root", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "Root Controller")
 public class RootController {
 
     private final UserRepository repository;

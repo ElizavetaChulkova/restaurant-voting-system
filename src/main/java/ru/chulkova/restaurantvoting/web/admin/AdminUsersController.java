@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.web.admin;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/api/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Admin Users Controller")
 public class AdminUsersController {
 
     private UserRepository repository;

@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.web.user;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/api/account")
 @Slf4j
 @AllArgsConstructor
+@Tag(name = "Account Controller")
 public class AccountController {
 
     private final UserRepository repository;
