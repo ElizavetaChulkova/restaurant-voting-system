@@ -13,6 +13,7 @@ import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.service.UserService;
 import ru.chulkova.restaurantvoting.to.UserTo;
+import ru.chulkova.restaurantvoting.util.UsersUtil;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class AdminUserController {
 
     @GetMapping
     public ResponseEntity<List<UserTo>> getAll() {
-        List<UserTo> users = UserTo.getTos(repository.findAll());
+        List<UserTo> users = UsersUtil.getTos(repository.findAll());
         log.info("get all users {}", users);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -40,13 +41,13 @@ public class AdminUserController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserTo get(@PathVariable("id") Integer id) {
         log.info("get user {} by id= {}", repository.findById(id), id);
-        return UserTo.getTo(repository.findById(id).orElseThrow());
+        return UsersUtil.getTo(repository.findById(id).orElseThrow());
     }
 
     @GetMapping(value = "by-email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserTo getByEmail(@PathVariable("email") String email) {
         log.info("get user {} by email= {}", repository.getByEmail(email), email);
-        return UserTo.getTo(repository.getByEmail(email).orElseThrow());
+        return UsersUtil.getTo(repository.getByEmail(email).orElseThrow());
     }
 
     @DeleteMapping(value = "/{id}")
@@ -65,7 +66,7 @@ public class AdminUserController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/account/{id}")
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(UserTo.getTo(user));
+        return ResponseEntity.created(uriOfNewResource).body(UsersUtil.getTo(user));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

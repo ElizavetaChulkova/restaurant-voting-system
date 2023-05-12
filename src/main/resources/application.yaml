@@ -4,7 +4,6 @@ spring:
     allow-bean-definition-overriding: true
     lazy-initialization: true
   jpa:
-    defer-datasource-initialization: true
     show-sql: true
     open-in-view: false
     hibernate:
@@ -31,34 +30,21 @@ spring:
     #    tcp: jdbc:h2:tcp://localhost:9092/~/voting
     username: sa
     password:
-  h2.console.enabled: true
 
-  data.rest:
-    #  https://docs.spring.io/spring-data/rest/docs/current/reference/html/#getting-started.basic-settings
-    basePath: /api
-    returnBodyOnCreate: true
+  # Jackson Serialization Issue Resolver
+  jackson.visibility:
+    field: any
+    getter: none
+    setter: none
+    is-getter: none
 
   # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
   cache:
     cache-names: users
     caffeine.spec: maximumSize=5000,expireAfterAccess=60s
 
-#  https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#security-properties
-#  security:
-#    user:
-#      name: user
-#      password: password
-#      roles: USER
-
 logging:
   level:
     root: WARN
     ru.chulkova.ru.chulkova.restaurantvoting.: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
-
-# Jackson Serialization Issue Resolver
-#  jackson:
-#    visibility.field: any
-#    visibility.getter: none
-#    visibility.setter: none
-#    visibility.is-getter: none

@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
-import ru.chulkova.restaurantvoting.model.BaseEntity;
+import ru.chulkova.restaurantvoting.web.HasId;
 
 @UtilityClass
 @Slf4j
@@ -31,14 +31,14 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkNew(BaseEntity entity) {
+    public static void checkNew(HasId entity) {
         if (!entity.isNew()) {
             throw new IllegalArgumentException(entity.getClass().getSimpleName() + " must be new (id=null)");
         }
     }
 
     //  Conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
-    public static void assureIdConsistent(BaseEntity entity, int id) {
+    public static void assureIdConsistent(HasId entity, int id) {
         if (entity.isNew()) {
             entity.setId(id);
         } else if (entity.id() != id) {

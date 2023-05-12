@@ -22,5 +22,4 @@ public class MealService {
         Assert.notNull(meal, "meal must not be null");
         checkNotFoundWithId(repository.save(meal), id);
     }
-
 }

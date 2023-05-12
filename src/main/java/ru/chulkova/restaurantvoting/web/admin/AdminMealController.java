@@ -14,6 +14,7 @@ import ru.chulkova.restaurantvoting.repository.MealRepository;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.service.MealService;
 import ru.chulkova.restaurantvoting.to.MealTo;
+import ru.chulkova.restaurantvoting.util.MealsUtil;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
@@ -35,7 +36,7 @@ public class AdminMealController {
     @GetMapping(value = "/meals", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getAll() {
         log.info("getAllMeals {}", mealRepository.findAll());
-        return MealTo.getTos(mealRepository.findAll());
+        return MealsUtil.getTos(mealRepository.findAll());
     }
 
     @DeleteMapping("/meals/{mealId}")
@@ -55,7 +56,7 @@ public class AdminMealController {
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/admin/restaurants/{id}/meals")
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(MealTo.getTo(meal));
+        return ResponseEntity.created(uriOfNewResource).body(MealsUtil.getTo(meal));
     }
 
     @PutMapping(value = "/{restId}/meals/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -71,6 +72,6 @@ public class AdminMealController {
     @GetMapping(value = "/{id}/meals", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getAllByRestaurantId(@PathVariable("id") int restId) {
         log.info("getAll meals for restaurant {}", restId);
-        return MealTo.getTos(mealRepository.getAll(restId));
+        return MealsUtil.getTos(mealRepository.getAll(restId));
     }
 }

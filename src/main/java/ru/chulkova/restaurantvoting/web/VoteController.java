@@ -35,6 +35,7 @@ public class VoteController {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
                 authUser.id(), restId);
         VoteTo voteTo = service.create(newVote);
+        log.info("create vote for restId = {}, userId = {}", restId, authUser.id());
         return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
     }
 
@@ -46,8 +47,12 @@ public class VoteController {
             vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
             vote.setRestaurantId(restId);
             service.update(vote);
+            log.info("update vote userId = {}, restId = {}", authUser.id(), restId);
             return new ResponseEntity<>(service.update(vote), HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            log.error("Not allowed to change vote");
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/all-votes", produces = MediaType.APPLICATION_JSON_VALUE)

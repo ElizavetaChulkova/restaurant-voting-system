@@ -5,25 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.chulkova.restaurantvoting.config.WebSecurityConfig;
-import ru.chulkova.restaurantvoting.model.Meal;
 import ru.chulkova.restaurantvoting.model.Restaurant;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
 import ru.chulkova.restaurantvoting.web.UserTestUtil;
 
-import java.time.LocalDate;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
 import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.MEAL_ID;
 import static ru.chulkova.restaurantvoting.web.admin.AdminMealController.ADMIN_MEAL_URL;
 import static ru.chulkova.restaurantvoting.web.admin.AdminRestaurantController.ADMIN_REST_URL;
 

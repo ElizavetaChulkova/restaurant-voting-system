@@ -1,29 +1,39 @@
 package ru.chulkova.restaurantvoting.to;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ru.chulkova.restaurantvoting.model.Meal;
-import ru.chulkova.restaurantvoting.model.User;
+import lombok.Value;
+import ru.chulkova.restaurantvoting.util.NoHtml;
+import ru.chulkova.restaurantvoting.web.HasIdAndEmail;
 
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@Data
-@AllArgsConstructor
+@Value
+@EqualsAndHashCode(callSuper = true)
 @ToString
-public class UserTo {
+public class UserTo extends BaseTo implements HasIdAndEmail {
 
-    private Integer id;
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @NoHtml
+    String name;
 
-    private String name;
+    @Email
+    @NotBlank
+    @Size(max = 100)
+    @NoHtml
+    String email;
 
-    private String email;
+    @NotBlank
+    @Size(min = 5, max = 32)
+    String password;
 
-    public static UserTo getTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail());
-    }
-
-    public static List<UserTo> getTos(List<User> users) {
-        return users.stream().map(UserTo::getTo).toList();
+    public UserTo(Integer id, String name, String email, String password) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 }

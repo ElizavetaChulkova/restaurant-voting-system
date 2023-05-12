@@ -20,10 +20,10 @@ import javax.validation.Valid;
 @RequestMapping(value = ProfileController.URL)
 @Slf4j
 @AllArgsConstructor
-@Tag(name = "Account Controller")
+@Tag(name = "Profile Controller")
 public class ProfileController {
 
-    public static final String URL = "/api/account";
+    public static final String URL = "/api/profile";
     private final UserRepository repository;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

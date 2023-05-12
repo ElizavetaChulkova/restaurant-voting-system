@@ -9,12 +9,10 @@ import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.to.VoteTo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Slf4j
@@ -24,12 +22,6 @@ public class VoteService {
     private final VoteRepository voteRepo;
 
     private final RestaurantRepository restRepo;
-
-    public VoteTo getUserVoteByDate(int userId, LocalDate date) {
-        log.info("getUserVotesByDate: userId = {}, date = {}", userId, date);
-        return getTo(Objects.requireNonNull(voteRepo.getVoteByDate(userId, date)
-                .orElse(null)));
-    }
 
     public List<VoteTo> getAllUserVotes(int userId) {
         List<Vote> userVotes = voteRepo.getAllUserVotes(userId);
@@ -59,7 +51,7 @@ public class VoteService {
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 
-    public boolean isAbleToChangeVote(LocalTime time) {
+    public static boolean isAbleToChangeVote(LocalTime time) {
         if (time.isBefore(Vote.NO_CHANGE_TIME)) {
             log.info("allowed to change vote: time = {}", time);
             return true;

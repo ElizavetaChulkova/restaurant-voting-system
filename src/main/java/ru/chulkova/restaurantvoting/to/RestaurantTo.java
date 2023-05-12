@@ -1,29 +1,23 @@
 package ru.chulkova.restaurantvoting.to;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ru.chulkova.restaurantvoting.model.BaseEntity;
-import ru.chulkova.restaurantvoting.model.Restaurant;
+import lombok.Value;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@Data
-@AllArgsConstructor
+@Value
 @ToString
-public class RestaurantTo {
+@EqualsAndHashCode(callSuper = true)
+public class RestaurantTo extends BaseTo {
 
-    private Integer id;
+    @NotBlank
+    @Size(min = 2, max = 100)
+    String name;
 
-    private String name;
-
-    public static List<RestaurantTo> getTos(List<Restaurant> rests) {
-        return rests.stream().map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName())).toList();
+    public RestaurantTo(Integer id, String name) {
+        super(id);
+        this.name = name;
     }
-
-    public static RestaurantTo getTo(@NotNull Restaurant restaurant) {
-        return new RestaurantTo(restaurant.getId(), restaurant.getName());
-    }
-
 }

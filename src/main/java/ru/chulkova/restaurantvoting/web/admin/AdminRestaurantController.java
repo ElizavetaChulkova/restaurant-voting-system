@@ -13,6 +13,7 @@ import ru.chulkova.restaurantvoting.model.Restaurant;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.service.RestaurantService;
 import ru.chulkova.restaurantvoting.to.RestaurantTo;
+import ru.chulkova.restaurantvoting.util.RestaurantsUtil;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
@@ -33,12 +34,12 @@ public class AdminRestaurantController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestaurantTo get(@PathVariable("id") int id) {
         log.info("get restaurant {} by id= {}", repository.findById(id), id);
-        return RestaurantTo.getTo(repository.findById(id).orElseThrow());
+        return RestaurantsUtil.getTo(repository.findById(id).orElseThrow());
     }
 
     @GetMapping
     public ResponseEntity<List<RestaurantTo>> getAll() {
-        List<RestaurantTo> rests = RestaurantTo.getTos(repository.getAll());
+        List<RestaurantTo> rests = RestaurantsUtil.getTos(repository.getAll());
         log.info("get all restaurants {}", rests);
         return new ResponseEntity<>(rests, HttpStatus.OK);
     }
