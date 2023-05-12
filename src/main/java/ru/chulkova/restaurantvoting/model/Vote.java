@@ -18,7 +18,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true)
 public class Vote extends BaseEntity implements Serializable {
 
     public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
@@ -45,5 +44,11 @@ public class Vote extends BaseEntity implements Serializable {
     public Vote(Integer id, LocalDate voteDate, LocalTime voteTime, Integer userId, Integer restaurantId) {
         this(voteDate, voteTime, userId, restaurantId);
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote: " + id + '[' + voteDate + ',' +
+                voteTime + ',' + userId + ',' + restaurantId + ']';
     }
 }

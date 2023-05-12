@@ -38,8 +38,8 @@ public class AdminUserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserTo get(@PathVariable("id") Integer id) {
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserTo get(@PathVariable("userId") Integer id) {
         log.info("get user {} by id= {}", repository.findById(id), id);
         return UsersUtil.getTo(repository.findById(id).orElseThrow());
     }
@@ -50,9 +50,9 @@ public class AdminUserController {
         return UsersUtil.getTo(repository.getByEmail(email).orElseThrow());
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") int id) {
+    public void delete(@PathVariable("userId") int id) {
         log.info("delete user by id= {}", id);
         repository.deleteById(id);
     }
@@ -69,9 +69,9 @@ public class AdminUserController {
         return ResponseEntity.created(uriOfNewResource).body(UsersUtil.getTo(user));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @PathVariable("id") int id) throws NotFoundException {
+    public void update(@Valid @RequestBody User user, @PathVariable("userId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(user, id);
         log.info("update restaurant from {} to {}", repository.findById(id), user);
         service.update(user, id);

@@ -46,9 +46,10 @@ public class AdminMealController {
         mealRepository.delete(mealId);
     }
 
-    @PostMapping(value = "/{id}/new-meal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{restaurantId}/new-meal", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<MealTo> create(@Valid @RequestBody Meal meal, @PathVariable("id") int restId) {
+    public ResponseEntity<MealTo> create(@Valid @RequestBody Meal meal,
+                                         @PathVariable("restaurantId") int restId) {
         ValidationUtil.checkNew(meal);
         log.info("create new meal {} for restaurant {}", meal, restId);
         meal.setRestaurant(restaurantRepository.findById(restId).orElse(null));
@@ -59,18 +60,18 @@ public class AdminMealController {
         return ResponseEntity.created(uriOfNewResource).body(MealsUtil.getTo(meal));
     }
 
-    @PutMapping(value = "/{restId}/meals/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurantId}/meals/{mealId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Meal meal, @PathVariable("restId") int restId,
-                       @PathVariable("id") int id) throws NotFoundException {
+    public void update(@Valid @RequestBody Meal meal, @PathVariable("restaurantId") int restId,
+                       @PathVariable("mealId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(meal, id);
         meal.setRestaurant(restaurantRepository.findById(restId).orElseThrow());
         log.info("update meal {} to {}", mealRepository.findById(id), meal);
         service.update(meal, id);
     }
 
-    @GetMapping(value = "/{id}/meals", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MealTo> getAllByRestaurantId(@PathVariable("id") int restId) {
+    @GetMapping(value = "/{restaurantId}/meals", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MealTo> getAllByRestaurantId(@PathVariable("restaurantId") int restId) {
         log.info("getAll meals for restaurant {}", restId);
         return MealsUtil.getTos(mealRepository.getAll(restId));
     }

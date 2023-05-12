@@ -23,7 +23,7 @@ import javax.validation.Valid;
 @Tag(name = "Profile Controller")
 public class ProfileController {
 
-    public static final String URL = "/api/profile";
+    public static final String URL = "/api/account";
     private final UserRepository repository;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -58,8 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/api/root/**").anonymous()
-                .antMatchers("/api/profile/**").hasRole(Role.USER.name())
-                .antMatchers("/api/profile/vote/**").hasRole(Role.USER.name())
+                .antMatchers("/api/account/**").hasRole(Role.USER.name())
+//                .antMatchers("/api/account/vote/**").hasRole(Role.USER.name())
                 .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

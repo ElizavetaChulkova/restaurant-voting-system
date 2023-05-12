@@ -29,8 +29,8 @@ public class VoteController {
 
     private final VoteRepository repository;
 
-    @PostMapping("/{id}")
-    public ResponseEntity<VoteTo> create(@PathVariable("id") int restId,
+    @PostMapping("/{restaurantId}")
+    public ResponseEntity<VoteTo> create(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
                 authUser.id(), restId);
@@ -39,8 +39,8 @@ public class VoteController {
         return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<VoteTo> update(@PathVariable("id") int restId,
+    @PutMapping("/{restaurantId}")
+    public ResponseEntity<VoteTo> update(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote vote = repository.getVoteByDate(authUser.id(), LocalDate.now()).orElse(null);
         if (vote != null) {

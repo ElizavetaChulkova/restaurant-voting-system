@@ -31,8 +31,8 @@ public class AdminRestaurantController {
     private final RestaurantRepository repository;
     private final RestaurantService service;
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantTo get(@PathVariable("id") int id) {
+    @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public RestaurantTo get(@PathVariable("restaurantId") int id) {
         log.info("get restaurant {} by id= {}", repository.findById(id), id);
         return RestaurantsUtil.getTo(repository.findById(id).orElseThrow());
     }
@@ -44,9 +44,9 @@ public class AdminRestaurantController {
         return new ResponseEntity<>(rests, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") int id) {
+    public void delete(@PathVariable("restaurantId") int id) {
         log.info("delete restaurant {}", id);
         repository.delete(id);
     }
@@ -63,9 +63,10 @@ public class AdminRestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(restaurant);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable("id") int id) throws NotFoundException {
+    public void update(@Valid @RequestBody Restaurant restaurant,
+                       @PathVariable("restaurantId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(restaurant, id);
         log.info("update restaurant from {} to {}", repository.findById(id), restaurant);
         service.update(restaurant, id);
