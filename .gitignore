@@ -1,9 +1,9 @@
 HELP.md
-VoteRequests.md
-AccountRequests.md
-AdminMealRequests.md
-AdminRestaurantRequests.md
-AdminUsersRequests.md
+md/VoteRequests.md
+md/AccountRequests.md
+md/AdminMealRequests.md
+md/AdminRestaurantRequests.md
+md/AdminUsersRequests.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -37,3 +37,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/md/
