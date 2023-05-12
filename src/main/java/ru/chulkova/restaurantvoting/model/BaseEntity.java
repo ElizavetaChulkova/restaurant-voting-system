@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
+import ru.chulkova.restaurantvoting.web.HasId;
 
 import javax.persistence.*;
 
@@ -14,13 +15,13 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Access(AccessType.FIELD)
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class BaseEntity implements Persistable<Integer>, HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    public Integer id() {
+    public int id() {
         Assert.notNull(id, "Entity must have id");
         return id;
     }

@@ -17,11 +17,11 @@ import ru.chulkova.restaurantvoting.web.AuthUser;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = AccountController.URL)
+@RequestMapping(value = ProfileController.URL)
 @Slf4j
 @AllArgsConstructor
 @Tag(name = "Account Controller")
-public class AccountController {
+public class ProfileController {
 
     public static final String URL = "/api/account";
     private final UserRepository repository;

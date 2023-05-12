@@ -21,9 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
 import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
-import static ru.chulkova.restaurantvoting.web.admin.AdminUsersController.ADMIN_USERS_URL;
+import static ru.chulkova.restaurantvoting.web.admin.AdminUserController.ADMIN_USERS_URL;
 
-class AdminUsersControllerTest extends AbstractControllerTest {
+class AdminUserControllerTest extends AbstractControllerTest {
 
     @Autowired
     private UserRepository userRepository;

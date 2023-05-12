@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Meal extends BaseEntity {
+public class Meal extends BaseEntity implements Serializable {
 
     @Column(name = "price")
     @NotNull

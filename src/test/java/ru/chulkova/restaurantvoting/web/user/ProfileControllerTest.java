@@ -20,9 +20,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
 import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_ID;
 import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_MAIL;
-import static ru.chulkova.restaurantvoting.web.user.AccountController.URL;
+import static ru.chulkova.restaurantvoting.web.user.ProfileController.URL;
 
-class AccountControllerTest extends AbstractControllerTest {
+class ProfileControllerTest extends AbstractControllerTest {
 
     @Autowired
     private UserRepository userRepository;

@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @PostConstruct
     void setMapper() {
-        JsonUtil.setObjectMapper(objectMapper);
+        JsonUtil.setMapper(objectMapper);
     }
 
     @Bean

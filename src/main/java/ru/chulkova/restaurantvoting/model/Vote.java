@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -18,7 +19,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class Vote extends BaseEntity {
+public class Vote extends BaseEntity implements Serializable {
 
     public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
 

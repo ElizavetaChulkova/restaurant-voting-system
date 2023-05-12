@@ -23,8 +23,8 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/api/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Admin Users Controller")
-public class AdminUsersController {
+@Tag(name = "Admin User Controller")
+public class AdminUserController {
 
     public static final String ADMIN_USERS_URL = "/api/admin/users";
     private UserRepository repository;
