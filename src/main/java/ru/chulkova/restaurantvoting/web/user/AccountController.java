@@ -3,6 +3,8 @@ package ru.chulkova.restaurantvoting.web.user;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +34,7 @@ public class AccountController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "users")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete {}", authUser);
         repository.deleteById(authUser.id());
@@ -39,7 +42,8 @@ public class AccountController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
+    @CachePut(value = "users")
+    public User update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
         log.info("update {} to {}", authUser, user);
         User oldUser = authUser.getUser();
         ValidationUtil.assureIdConsistent(user, oldUser.id());
@@ -47,6 +51,6 @@ public class AccountController {
         if (user.getPassword() == null) {
             user.setPassword(oldUser.getPassword());
         }
-        repository.save(user);
+        return repository.save(user);
     }
 }
