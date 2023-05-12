@@ -1,4 +1,9 @@
 HELP.md
+VoteRequests.md
+AccountRequests.md
+AdminMealRequests.md
+AdminRestaurantRequests.md
+AdminUsersRequests.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -18,6 +23,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.mvn
 
 ### NetBeans ###
 /nbproject/private/
