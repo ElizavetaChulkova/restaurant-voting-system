@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Access(AccessType.FIELD)
-@ToString
 public abstract class BaseEntity implements Persistable<Integer> {
 
     @Id
@@ -47,5 +46,10 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @Override
     public int hashCode() {
         return id == null ? 0 : id;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ":" + id;
     }
 }

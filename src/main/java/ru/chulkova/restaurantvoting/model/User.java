@@ -10,7 +10,7 @@ import ru.chulkova.restaurantvoting.util.JsonDeserializers;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -23,12 +23,11 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString(callSuper = true, exclude = {"password"})
 public class User extends BaseEntity implements Serializable {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
-    @NotEmpty
+    @NotBlank
     @Size(min = 5, max = 128)
     private String email;
 
@@ -52,11 +51,16 @@ public class User extends BaseEntity implements Serializable {
     private Set<Role> roles;
 
     public User(Integer id, String email, String name, String password, Set<Role> roles) {
-        this(email, name, password, EnumSet.copyOf(roles));
+        this(email, name, password, roles.isEmpty() ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles));
         this.id = id;
     }
 
     public void setEmail(String email) {
         this.email = StringUtils.hasText(email) ? email.toLowerCase() : null;
+    }
+
+    @Override
+    public String toString() {
+        return "User:" + id + '[' + email + ']';
     }
 }

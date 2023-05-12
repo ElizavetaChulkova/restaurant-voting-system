@@ -32,7 +32,7 @@ public abstract class AbstractControllerTest {
 
     @Autowired
     private WebApplicationContext context;
-    protected MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @PostConstruct
     public void setup() {
