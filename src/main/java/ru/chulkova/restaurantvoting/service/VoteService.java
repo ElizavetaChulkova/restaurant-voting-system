@@ -3,6 +3,7 @@ package ru.chulkova.restaurantvoting.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
@@ -11,6 +12,7 @@ import ru.chulkova.restaurantvoting.to.VoteTo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,34 +35,27 @@ public class VoteService {
         List<Vote> userVotes = voteRepo.getAllUserVotes(userId);
         log.info("getAllUserVotes: userId = {}", userId);
         return userVotes.stream()
-                .map(vote -> new VoteTo( vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
+                .map(vote -> new VoteTo(vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
                         LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime())))
                 .toList();
     }
 
-    public VoteTo createOrUpdate(int userId, int restId) {
-//        ValidationUtil.assureIdConsistent(userRepository.getById(userId), userId);
-        Vote vote = voteRepo.getVoteByDate(userId, LocalDate.now()).orElse(null);
-        if (vote == null) {
-            log.info("create vote: userId = {}, restaurantId = {}", userId, restId);
-            vote = new Vote(LocalDate.now(), LocalTime.now(), userId, restId);
-        } else {
-            if (isAbleToChangeVote(LocalTime.now())) {
-                log.info("update vote: userId = {}, restaurantId = {}", userId, restId);
-                vote.setRestaurantId(restId);
-                vote.setVoteDate(LocalDate.now());
-                vote.setVoteTime(LocalTime.now());
-            } else {
-                log.info("not allowed to change vote");
-                throw new UnsupportedOperationException("You are not allowed to change your vote");
-            }
-        }
-        voteRepo.save(vote);
-        return getTo(vote);
+    @Transactional
+    public VoteTo create(Vote vote) {
+        Vote newVote = voteRepo.save(vote);
+        return getTo(newVote);
+    }
+
+    @Transactional
+    public VoteTo update(Vote vote) {
+        if (isAbleToChangeVote(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))) {
+            voteRepo.save(vote);
+        } else throw new UnsupportedOperationException("You are not allowed to change your vote");
+        return getTo(voteRepo.save(vote));
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
+        return new VoteTo(vote.id(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 

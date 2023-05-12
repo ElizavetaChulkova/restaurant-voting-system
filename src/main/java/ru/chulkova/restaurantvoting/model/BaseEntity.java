@@ -21,7 +21,7 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    public int id() {
+    public Integer id() {
         Assert.notNull(id, "Entity must have id");
         return id;
     }

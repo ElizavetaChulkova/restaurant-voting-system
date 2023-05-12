@@ -31,4 +31,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT r.name FROM Restaurant r WHERE r.id=:id")
     String getRestaurantNameById(@Param("id") int restId);
+
+    @Query("SELECT r FROM Restaurant r WHERE r.id=:id")
+    Restaurant getRestaurantById(@Param("id") int id);
 }

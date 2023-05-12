@@ -1,5 +1,8 @@
 #  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 spring:
+  main:
+    allow-bean-definition-overriding: true
+    lazy-initialization: true
   jpa:
     defer-datasource-initialization: true
     show-sql: true

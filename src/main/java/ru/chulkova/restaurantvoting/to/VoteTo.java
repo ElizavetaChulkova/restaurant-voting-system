@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 public class VoteTo {
 
-    Integer id;
+    private Integer id;
 
     private String restaurantName;
 

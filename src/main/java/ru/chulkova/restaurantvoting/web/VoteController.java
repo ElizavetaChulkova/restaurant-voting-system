@@ -9,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.chulkova.restaurantvoting.model.Vote;
+import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.to.VoteTo;
-import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RestController
@@ -26,19 +27,27 @@ public class VoteController {
 
     private final VoteService service;
 
+    private final VoteRepository repository;
+
     @PostMapping("/{id}")
-    public ResponseEntity<VoteTo> vote(@PathVariable("id") int restId,
-                                       @AuthenticationPrincipal AuthUser authUser) {
-        ValidationUtil.assureIdConsistent(authUser.getUser(), authUser.id());
-        Vote newVote = new Vote(LocalDate.now(), LocalTime.now(), authUser.id(), restId);
-        VoteTo voteTo = service.getTo(newVote);
-        try {
-            service.createOrUpdate(authUser.id(), restId);
-            return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
-        } catch (UnsupportedOperationException e) {
-            return new ResponseEntity<>(service.getUserVoteByDate(authUser.id(),
-                    newVote.getVoteDate()), HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<VoteTo> create(@PathVariable("id") int restId,
+                                         @AuthenticationPrincipal AuthUser authUser) {
+        Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
+                authUser.id(), restId);
+        VoteTo voteTo = service.create(newVote);
+        return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VoteTo> update(@PathVariable("id") int restId,
+                                         @AuthenticationPrincipal AuthUser authUser) {
+        Vote vote = repository.getVoteByDate(authUser.id(), LocalDate.now()).orElse(null);
+        if (vote != null) {
+            vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
+            vote.setRestaurantId(restId);
+            service.update(vote);
+            return new ResponseEntity<>(service.update(vote), HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping(value = "/all-votes", produces = MediaType.APPLICATION_JSON_VALUE)

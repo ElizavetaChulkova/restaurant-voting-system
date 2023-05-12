@@ -32,7 +32,6 @@ public class Vote extends BaseEntity {
 
     @Column(name = "user_id", nullable = false)
     @JoinColumn(name = "user_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Integer userId;
@@ -41,4 +40,9 @@ public class Vote extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Integer restaurantId;
+
+    public Vote(Integer id, LocalDate voteDate, LocalTime voteTime, Integer userId, Integer restaurantId) {
+        this(voteDate, voteTime, userId, restaurantId);
+        this.id = id;
+    }
 }

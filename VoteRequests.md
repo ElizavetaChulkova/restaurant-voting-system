@@ -44,3 +44,26 @@ Response:
 
 ###
 
+Голосуем в первый раз за день
+
+POST http://localhost:8080/api/account/vote/3
+Authorization: Basic admin@javaops.ru admin
+
+Response:
+{
+"id": 3,
+"restaurantName": "Dante",
+"voteDateTime": "2023-05-12 01:54"
+}
+
+Если в базе уже существует голос в этот день: 500
+
+###
+Изменяем существующий голос до 11
+
+PUT http://localhost:8080/api/account/vote/2
+Authorization: Basic admin@javaops.ru admin
+
+Response: <Response body is empty>
+
+Response code: 204

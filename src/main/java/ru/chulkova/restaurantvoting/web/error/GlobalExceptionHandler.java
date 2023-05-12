@@ -21,7 +21,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final ErrorAttributes errorAttributes;
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<Map<String, Object>> appException(AppException ex, WebRequest request) {
+    public ResponseEntity<Map<String, Object>> appException(AppException ex,
+                                                            WebRequest request) {
         log.error("Application Exception", ex);
         Map<String, Object> body = errorAttributes.getErrorAttributes(request, ex.getOptions());
         HttpStatus status = ex.getStatus();

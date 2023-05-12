@@ -11,9 +11,9 @@ import ru.chulkova.restaurantvoting.util.JsonDeserializers;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
@@ -38,7 +38,6 @@ public class User extends BaseEntity implements Serializable {
 
     @Column(name = "password")
     @Size(max = 256)
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
     private String password;
@@ -51,6 +50,11 @@ public class User extends BaseEntity implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
     private Set<Role> roles;
+
+    public User(Integer id, String email, String name, String password, Set<Role> roles) {
+        this(email, name, password, EnumSet.copyOf(roles));
+        this.id = id;
+    }
 
     public void setEmail(String email) {
         this.email = StringUtils.hasText(email) ? email.toLowerCase() : null;

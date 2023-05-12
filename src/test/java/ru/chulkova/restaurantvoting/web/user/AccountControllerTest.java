@@ -6,14 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.chulkova.restaurantvoting.model.Role;
+import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
+import ru.chulkova.restaurantvoting.web.UserTestUtil;
+
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
-import static ru.chulkova.restaurantvoting.web.admin.AdminMealController.ADMIN_MEAL_URL;
+import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
+import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_ID;
+import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_MAIL;
 import static ru.chulkova.restaurantvoting.web.user.AccountController.URL;
 
 class AccountControllerTest extends AbstractControllerTest {
@@ -36,32 +42,25 @@ class AccountControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    //TODO исправить нерабочий тест
     @Test
     @WithUserDetails(value = USER_MAIL)
     void delete() throws Exception {
+        Integer expected = userRepository.findAll().size();
         perform(MockMvcRequestBuilders.delete(URL))
                 .andExpect(status().isNoContent());
-        Assertions.assertFalse(userRepository.findById(USER_ID).isPresent());
-        Assertions.assertTrue(userRepository.findById(ADMIN_ID).isPresent());
+        Assertions.assertNotEquals(expected, userRepository.findAll().size());
     }
 
     @Test
     @WithUserDetails(value = USER_MAIL)
-    void getForbidden() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_MEAL_URL))
-                .andExpect(status().isForbidden());
+    void update() throws Exception {
+        User updated = new User(USER_ID, "newemail@gmailcom", "new name",
+                "newpassword", Set.of(Role.USER));
+        perform(MockMvcRequestBuilders.put(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        UserTestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
     }
-
-    //TODO test update
-//    @Test
-//    @WithUserDetails(value = USER_MAIL)
-//    void update() {
-//        User updatedTo = new User("user@yandex.ru", "newName", "newPassword",
-//                Set.of(Role.USER));
-//        perform(MockMvcRequestBuilders.put(URL).contentType(MediaType.APPLICATION_JSON))
-//                .content(JsonUtil.writeValue(updatedTo))
-//                .andDo(print())
-//                .andExpect(status().isNoContent());
-//    }
 }

@@ -41,8 +41,12 @@ public class Meal extends BaseEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    @NotNull
     private Restaurant restaurant;
+
+    public Meal(Integer id, Integer price, String dishName, LocalDate menuDate, Restaurant restaurant) {
+        this(price, dishName, menuDate, restaurant);
+        this.id = id;
+    }
 
     @Override
     public String toString() {
