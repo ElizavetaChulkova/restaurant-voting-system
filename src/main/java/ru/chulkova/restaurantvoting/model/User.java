@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.StringUtils;
 import ru.chulkova.restaurantvoting.util.JsonDeserializers;
+import ru.chulkova.restaurantvoting.util.NoHtml;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -29,10 +30,12 @@ public class User extends BaseEntity implements Serializable {
     @Email
     @NotBlank
     @Size(min = 5, max = 128)
+    @NoHtml
     private String email;
 
     @Column(name = "name")
     @Size(min = 2, max = 128)
+    @NoHtml
     private String name;
 
     @Column(name = "password")
