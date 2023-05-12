@@ -12,6 +12,7 @@ import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.to.VoteTo;
+import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,6 +35,7 @@ public class VoteController {
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
                 authUser.id(), restId);
+        ValidationUtil.checkNew(newVote);
         VoteTo voteTo = service.create(newVote);
         log.info("create vote for restId = {}, userId = {}", restId, authUser.id());
         return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
@@ -43,6 +45,7 @@ public class VoteController {
     public ResponseEntity<VoteTo> update(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote vote = repository.getVoteByDate(authUser.id(), LocalDate.now()).orElse(null);
+        ValidationUtil.assureIdConsistent(vote, vote.id());
         if (vote != null) {
             vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
             vote.setRestaurantId(restId);
