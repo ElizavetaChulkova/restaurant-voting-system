@@ -10,7 +10,7 @@ import ru.chulkova.restaurantvoting.model.Role;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
-import ru.chulkova.restaurantvoting.web.UserTestUtil;
+import ru.chulkova.restaurantvoting.web.TestUtil;
 
 import java.util.Set;
 
@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_ID;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.USER_MAIL;
+import static ru.chulkova.restaurantvoting.web.TestUtil.USER_ID;
+import static ru.chulkova.restaurantvoting.web.TestUtil.USER_MAIL;
 import static ru.chulkova.restaurantvoting.web.user.ProfileController.URL;
 
 class ProfileControllerTest extends AbstractControllerTest {
@@ -61,7 +61,7 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        UserTestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
+        TestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
     }
 
     @Test

@@ -31,7 +31,7 @@ class RootControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
         User created = JsonUtil.readValue(result.andReturn().getResponse().getContentAsString(), User.class);
         Integer newId = created.id();
-        UserTestUtil.assertNoIdEquals(newUser, userRepository.findById(newId).orElseThrow());
+        TestUtil.assertNoIdEquals(newUser, userRepository.findById(newId).orElseThrow());
     }
 
     @Test

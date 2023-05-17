@@ -12,7 +12,7 @@ import ru.chulkova.restaurantvoting.repository.MealRepository;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
-import ru.chulkova.restaurantvoting.web.UserTestUtil;
+import ru.chulkova.restaurantvoting.web.TestUtil;
 
 import java.time.LocalDate;
 
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
+import static ru.chulkova.restaurantvoting.web.TestUtil.*;
 import static ru.chulkova.restaurantvoting.web.admin.AdminMealController.ADMIN_MEAL_URL;
 
 class AdminMealControllerTest extends AbstractControllerTest {
@@ -76,7 +76,7 @@ class AdminMealControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
         Meal created = JsonUtil.readValue(result.andReturn().getResponse().getContentAsString(), Meal.class);
         Integer newMealId = created.id();
-        UserTestUtil.assertNoIdEquals(newMeal, mealRepository.findById(newMealId).orElseThrow());
+        TestUtil.assertNoIdEquals(newMeal, mealRepository.findById(newMealId).orElseThrow());
     }
 
     @Test
@@ -90,6 +90,6 @@ class AdminMealControllerTest extends AbstractControllerTest {
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        UserTestUtil.assertEquals(updated, mealRepository.findById(MEAL_ID).orElseThrow());
+        TestUtil.assertEquals(updated, mealRepository.findById(MEAL_ID).orElseThrow());
     }
 }

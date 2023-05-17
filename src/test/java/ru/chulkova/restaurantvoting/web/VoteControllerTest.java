@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
+import static ru.chulkova.restaurantvoting.web.TestUtil.*;
 
 class VoteControllerTest extends AbstractControllerTest {
 
@@ -30,34 +30,34 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void create() throws Exception {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
-                USER_ID, 2);
+                user, restaurant);
         ResultActions result = perform(MockMvcRequestBuilders.post("/api/account/vote/" + 2)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newVote)))
                 .andExpect(status().isCreated());
         Vote created = JsonUtil.readValue(result.andReturn().getResponse().getContentAsString(), Vote.class);
         Integer newId = created.getId();
-        UserTestUtil.assertNoIdEquals(newVote, repository.findById(newId).orElseThrow());
+        TestUtil.assertNoIdEquals(newVote, repository.findById(newId).orElseThrow());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateVote() throws Exception {
         Vote updated = new Vote(VOTE_ID, LocalDate.now(),
-                LocalTime.now().truncatedTo(ChronoUnit.MINUTES), ADMIN_ID, 2);
+                LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
         try {
             perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(writeValue(updated)))
                     .andExpect(status().isNoContent());
-            UserTestUtil.assertEquals(updated, repository.findById(VOTE_ID).orElseThrow());
+            TestUtil.assertEquals(updated, repository.findById(VOTE_ID).orElseThrow());
         } catch (Exception e) {
             Assertions.assertEquals(e.getCause().getMessage(), "You are not allowed to change your vote");
         }
     }
 
     @Test
-    @WithUserDetails(value = UserTestUtil.USER_MAIL)
+    @WithUserDetails(value = TestUtil.USER_MAIL)
     void getAllUserVotes() throws Exception {
         perform(MockMvcRequestBuilders.get("/api/account/vote/all-votes"))
                 .andExpect(status().isOk())

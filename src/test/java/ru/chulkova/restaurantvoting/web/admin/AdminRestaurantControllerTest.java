@@ -11,13 +11,13 @@ import ru.chulkova.restaurantvoting.model.Restaurant;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
-import ru.chulkova.restaurantvoting.web.UserTestUtil;
+import ru.chulkova.restaurantvoting.web.TestUtil;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
+import static ru.chulkova.restaurantvoting.web.TestUtil.*;
 import static ru.chulkova.restaurantvoting.web.admin.AdminMealController.ADMIN_MEAL_URL;
 import static ru.chulkova.restaurantvoting.web.admin.AdminRestaurantController.ADMIN_REST_URL;
 
@@ -27,7 +27,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     private RestaurantRepository repository;
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_REST_URL + "/" + REST_ID))
                 .andExpect(status().isOk())
@@ -36,7 +36,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_REST_URL))
                 .andExpect(status().isOk())
@@ -53,7 +53,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
 
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(ADMIN_REST_URL + "/" + REST_ID))
                 .andExpect(status().isNoContent());
@@ -71,7 +71,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
         Restaurant created = JsonUtil.readValue(result.andReturn().getResponse().getContentAsString(),
                 Restaurant.class);
         Integer newId = created.id();
-        UserTestUtil.assertNoIdEquals(newRest, repository.findById(newId).orElseThrow());
+        TestUtil.assertNoIdEquals(newRest, repository.findById(newId).orElseThrow());
     }
 
     @Test
@@ -83,6 +83,6 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .content(writeValue(updatedRest)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        UserTestUtil.assertEquals(updatedRest, repository.findById(REST_ID).orElseThrow());
+        TestUtil.assertEquals(updatedRest, repository.findById(REST_ID).orElseThrow());
     }
 }

@@ -12,7 +12,7 @@ import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
-import ru.chulkova.restaurantvoting.web.UserTestUtil;
+import ru.chulkova.restaurantvoting.web.TestUtil;
 
 import java.util.Set;
 
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
-import static ru.chulkova.restaurantvoting.web.UserTestUtil.*;
+import static ru.chulkova.restaurantvoting.web.TestUtil.*;
 import static ru.chulkova.restaurantvoting.web.admin.AdminUserController.ADMIN_USERS_URL;
 
 class AdminUserControllerTest extends AbstractControllerTest {
@@ -29,7 +29,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     private UserRepository userRepository;
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL))
                 .andExpect(status().isOk())
@@ -38,16 +38,16 @@ class AdminUserControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + "/" + UserTestUtil.USER_ID))
+        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + "/" + TestUtil.USER_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
-    @WithUserDetails(value = UserTestUtil.ADMIN_MAIL)
+    @WithUserDetails(value = TestUtil.ADMIN_MAIL)
     void getByEmail() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + "/by-email/" + USER_MAIL))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(ADMIN_USERS_URL + "/" + UserTestUtil.USER_ID))
+        perform(MockMvcRequestBuilders.delete(ADMIN_USERS_URL + "/" + TestUtil.USER_ID))
                 .andExpect(status().isNoContent());
         Assertions.assertFalse(userRepository.findById(USER_ID).isPresent());
         Assertions.assertTrue(userRepository.findById(ADMIN_ID).isPresent());
@@ -89,7 +89,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
         User created = JsonUtil.readValue(result.andReturn().getResponse().getContentAsString(),
                 User.class);
         Integer newId = created.id();
-        UserTestUtil.assertNoIdEquals(newUser, userRepository.findById(newId).orElseThrow());
+        TestUtil.assertNoIdEquals(newUser, userRepository.findById(newId).orElseThrow());
     }
 
     @Test
@@ -102,6 +102,6 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        UserTestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
+        TestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
     }
 }
