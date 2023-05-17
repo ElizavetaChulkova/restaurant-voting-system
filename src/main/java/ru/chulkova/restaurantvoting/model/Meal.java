@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,8 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "meal", uniqueConstraints =
-@UniqueConstraint(columnNames = {"menu_date", "restaurant_id"}, name = "one_meal_per_day_idx"))
+@Table(name = "meal")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +24,6 @@ public class Meal extends BaseEntity implements Serializable {
 
     @Column(name = "price")
     @NotNull
-    @Range(min = 10, max = 5000)
     private int price;
 
     @Column(name = "dish_name")

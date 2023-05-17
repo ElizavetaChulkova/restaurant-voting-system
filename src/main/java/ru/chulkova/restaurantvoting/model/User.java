@@ -12,6 +12,7 @@ import ru.chulkova.restaurantvoting.util.NoHtml;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.EnumSet;
@@ -31,17 +32,20 @@ public class User extends BaseEntity implements Serializable {
     @NotBlank
     @Size(min = 5, max = 128)
     @NoHtml
+    @NotNull
     private String email;
 
     @Column(name = "name")
     @Size(min = 2, max = 128)
     @NoHtml
+    @NotNull
     private String name;
 
     @Column(name = "password")
     @Size(max = 256)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
+    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -51,6 +55,7 @@ public class User extends BaseEntity implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
+    @NotNull
     private Set<Role> roles;
 
     public User(Integer id, String email, String name, String password, Set<Role> roles) {
