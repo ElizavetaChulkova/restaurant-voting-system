@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.chulkova.restaurantvoting.model.User;
-import ru.chulkova.restaurantvoting.web.AuthUser;
+import ru.chulkova.restaurantvoting.web.user.AuthUser;
 
 import static java.util.Objects.requireNonNull;
 

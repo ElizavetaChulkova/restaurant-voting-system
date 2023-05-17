@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
-import ru.chulkova.restaurantvoting.web.AuthUser;
 
 import javax.validation.Valid;
 
