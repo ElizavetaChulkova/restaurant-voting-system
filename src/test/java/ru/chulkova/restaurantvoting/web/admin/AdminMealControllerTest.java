@@ -69,7 +69,7 @@ class AdminMealControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void create() throws Exception {
         Meal newMeal = new Meal(null, 222, "new meal",
-                LocalDate.of(2023, 2, 10), restaurantRepository.getRestaurantById(REST_ID));
+                LocalDate.of(2023, 2, 10), restaurantRepository.getById(REST_ID));
         ResultActions result = perform(MockMvcRequestBuilders.post(ADMIN_MEAL_URL + "/" + REST_ID + "/new-meal")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newMeal)))

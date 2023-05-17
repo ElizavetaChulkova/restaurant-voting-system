@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class MealTo extends BaseTo {
-
-    @NotNull
+    
     int price;
 
     @NotBlank

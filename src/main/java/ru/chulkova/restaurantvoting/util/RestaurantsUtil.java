@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RestaurantsUtil {
     public static List<RestaurantTo> getTos(List<Restaurant> rests) {
-        return rests.stream().map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName())).toList();
+        return rests.stream().map(RestaurantsUtil::getTo).toList();
     }
 
     public static RestaurantTo getTo(@NotNull Restaurant restaurant) {

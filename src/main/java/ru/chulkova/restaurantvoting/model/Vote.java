@@ -20,8 +20,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class Vote extends BaseEntity implements Serializable {
 
-    public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
-
     @Column(name = "vote_date", columnDefinition = "timestamp default CURRENT_DATE")
     @NotNull
     private LocalDate voteDate;

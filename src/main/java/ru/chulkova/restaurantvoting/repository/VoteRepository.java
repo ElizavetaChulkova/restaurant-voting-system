@@ -14,8 +14,8 @@ import java.util.Optional;
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
 
     @Query("SELECT v FROM Vote v WHERE v.userId=:userId and v.voteDate=:date")
-    Optional<Vote> getVoteByDate(@Param("userId") int userId, @Param("date") LocalDate date);
+    Optional<Vote> getByDate(@Param("userId") int userId, @Param("date") LocalDate date);
 
     @Query("SELECT v FROM Vote v WHERE v.userId=:userId")
-    List<Vote> getAllUserVotes(@Param("userId") int userId);
+    List<Vote> getAllByUserId(@Param("userId") int userId);
 }

@@ -44,7 +44,7 @@ public class VoteController {
     @PutMapping("/{restaurantId}")
     public ResponseEntity<VoteTo> update(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
-        Vote vote = repository.getVoteByDate(authUser.id(), LocalDate.now()).orElse(null);
+        Vote vote = repository.getByDate(authUser.id(), LocalDate.now()).orElse(null);
         ValidationUtil.assureIdConsistent(vote, vote.id());
         if (vote != null) {
             vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));

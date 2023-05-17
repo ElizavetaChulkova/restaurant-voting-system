@@ -19,15 +19,17 @@ import java.util.List;
 @AllArgsConstructor
 public class VoteService {
 
+    public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
+
     private final VoteRepository voteRepo;
 
     private final RestaurantRepository restRepo;
 
     public List<VoteTo> getAllUserVotes(int userId) {
-        List<Vote> userVotes = voteRepo.getAllUserVotes(userId);
+        List<Vote> userVotes = voteRepo.getAllByUserId(userId);
         log.info("getAllUserVotes: userId = {}", userId);
         return userVotes.stream()
-                .map(vote -> new VoteTo(vote.getId(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
+                .map(vote -> new VoteTo(vote.getId(), restRepo.getNameById(vote.getRestaurantId()),
                         LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime())))
                 .toList();
     }
@@ -47,12 +49,12 @@ public class VoteService {
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(vote.id(), restRepo.getRestaurantNameById(vote.getRestaurantId()),
+        return new VoteTo(vote.id(), restRepo.getNameById(vote.getRestaurantId()),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 
     public static boolean isAbleToChangeVote(LocalTime time) {
-        if (time.isBefore(Vote.NO_CHANGE_TIME)) {
+        if (time.isBefore(NO_CHANGE_TIME)) {
             log.info("allowed to change vote: time = {}", time);
             return true;
         } else return false;
