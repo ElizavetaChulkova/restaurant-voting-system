@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.chulkova.restaurantvoting.error.VoteCreationException;
+import ru.chulkova.restaurantvoting.error.VoteUpdatingException;
 import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.to.VoteTo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +30,9 @@ public class VoteService {
 
     @Transactional
     public VoteTo create(Vote vote) {
+        if (isVoteToday(vote.getUser().id())) {
+            throw new VoteCreationException("You have already voted today. Only one vote per day is allowed.");
+        }
         Vote newVote = voteRepo.save(vote);
         return getTo(newVote);
     }
@@ -35,7 +41,7 @@ public class VoteService {
     public VoteTo update(Vote vote) {
         if (isAbleToChange(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))) {
             voteRepo.save(vote);
-        } else throw new UnsupportedOperationException("You are not allowed to change your vote");
+        } else throw new VoteUpdatingException("You are not allowed to change your vote after 11 am.");
         return getTo(voteRepo.save(vote));
     }
 
@@ -53,5 +59,9 @@ public class VoteService {
             log.info("allowed to change vote: time = {}", time);
             return true;
         } else return false;
+    }
+
+    public boolean isVoteToday(int userId) {
+        return voteRepo.getByDate(userId, LocalDate.now()).isPresent();
     }
 }

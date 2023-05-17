@@ -39,30 +39,35 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
+        return createResponseEntity(request,
+                ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @NonNull
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
-            @NonNull Exception ex, Object body, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+            @NonNull Exception ex, Object body, @NonNull HttpHeaders headers,
+            @NonNull HttpStatus status, @NonNull WebRequest request) {
         log.error("Exception", ex);
         super.handleExceptionInternal(ex, body, headers, status, request);
-        return createResponseEntity(request, ErrorAttributeOptions.of(), ValidationUtil.getRootCause(ex).getMessage(), status);
+        return createResponseEntity(request,
+                ErrorAttributeOptions.of(), ValidationUtil.getRootCause(ex).getMessage(), status);
     }
 
     @NonNull
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
-            @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+            @NonNull HttpHeaders headers, @NonNull HttpStatus status,
+            @NonNull WebRequest request) {
         return handleBindingErrors(ex.getBindingResult(), request);
     }
 
     @NonNull
     @Override
     protected ResponseEntity<Object> handleBindException(
-            BindException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+            BindException ex, @NonNull HttpHeaders headers,
+            @NonNull HttpStatus status, @NonNull WebRequest request) {
         return handleBindingErrors(ex.getBindingResult(), request);
     }
 
@@ -70,11 +75,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String msg = result.getFieldErrors().stream()
                 .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
                 .collect(Collectors.joining("\n"));
-        return createResponseEntity(request, ErrorAttributeOptions.defaults(), msg, HttpStatus.UNPROCESSABLE_ENTITY);
+        return createResponseEntity(request, ErrorAttributeOptions.defaults(),
+                msg, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> ResponseEntity<T> createResponseEntity(WebRequest request, ErrorAttributeOptions options, String msg, HttpStatus status) {
+    private <T> ResponseEntity<T> createResponseEntity(WebRequest request,
+                                                       ErrorAttributeOptions options,
+                                                       String msg, HttpStatus status) {
         Map<String, Object> body = errorAttributes.getErrorAttributes(request, options);
         if (msg != null) {
             body.put("message", msg);
