@@ -14,12 +14,12 @@ public class TestUtil {
     public static final Integer USER_ID = 1;
     public static final String USER_MAIL = "user@gmail.com";
     public static final User user = new User(USER_ID, USER_MAIL, "User_First",
-            "password", Set.of(Role.USER));
+            "{noop}password", Set.of(Role.USER));
     public static final Integer ADMIN_ID = 2;
     public static final String ADMIN_MAIL = "admin@javaops.ru";
 
     public static final User admin = new User(ADMIN_ID, ADMIN_MAIL, "Admin_First",
-            "admin", Set.of(Role.USER, Role.ADMIN));
+            "{noop}admin", Set.of(Role.USER, Role.ADMIN));
     public static final Integer MEAL_ID = 1;
     public static final Integer REST_ID = 1;
 
@@ -31,6 +31,7 @@ public class TestUtil {
     }
 
     public static void assertNoIdEquals(BaseEntity actual, BaseEntity expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields("id", "password").isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison()
+                .ignoringFields("id", "password", "restaurant.menu").isEqualTo(expected);
     }
 }

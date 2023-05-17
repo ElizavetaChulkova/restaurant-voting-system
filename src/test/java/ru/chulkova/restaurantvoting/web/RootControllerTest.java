@@ -23,7 +23,7 @@ class RootControllerTest extends AbstractControllerTest {
 
     @Test
     void register() throws Exception {
-        User newUser = new User("newemail@gmail.com", "New Name",
+        User newUser = new User(null,"newemail@gmail.com", "New Name",
                 "password", Set.of(Role.USER));
         ResultActions result = perform(MockMvcRequestBuilders.post("/api/root/register")
                 .contentType(MediaType.APPLICATION_JSON)

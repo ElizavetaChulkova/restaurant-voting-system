@@ -33,21 +33,14 @@ public class AdminMealController {
     private final MealService service;
     private final RestaurantRepository restaurantRepository;
 
-    @GetMapping(value = "/meals")
-    public List<MealTo> getAll() {
-        List<Meal> meals = mealRepository.findAll();
-        log.info("getAllMeals");
-        return MealsUtil.getTos(meals);
-    }
-
-    @DeleteMapping("/meals/{mealId}")
+    @DeleteMapping("/{restaurantId}/meals/{mealId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("mealId") int mealId) {
+    public void delete(@PathVariable("restaurantId") int restId, @PathVariable("mealId") int mealId) {
         log.info("delete meal {}", mealId);
-        mealRepository.delete(mealId);
+        mealRepository.delete(restId, mealId);
     }
 
-    @PostMapping(value = "/{restaurantId}/new-meal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<MealTo> create(@Valid @RequestBody Meal meal,
                                          @PathVariable("restaurantId") int restId) {
@@ -71,9 +64,9 @@ public class AdminMealController {
         service.update(meal, id);
     }
 
-    @GetMapping(value = "/{restaurantId}/meals")
-    public List<MealTo> getAllByRestaurantId(@PathVariable("restaurantId") int restId) {
-        log.info("getAll meals for restaurant {}", restId);
-        return MealsUtil.getTos(mealRepository.getAll(restId));
-    }
+//    @GetMapping(value = "/{restaurantId}/meals")
+//    public List<Meal> getAllByRestaurantId(@PathVariable("restaurantId") int restId) {
+//        log.info("getAll meals for restaurant {}", restId);
+//        return mealRepository.getAll(restId);
+//    }
 }

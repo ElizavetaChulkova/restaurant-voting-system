@@ -32,9 +32,9 @@ public class AdminRestaurantController {
     private final RestaurantService service;
 
     @GetMapping(value = "/{restaurantId}")
-    public RestaurantTo get(@PathVariable("restaurantId") int id) {
+    public Restaurant get(@PathVariable("restaurantId") int id) {
         log.info("get restaurant with id = {}", id);
-        return RestaurantsUtil.getTo(repository.findById(id).orElseThrow());
+        return repository.getWithMeals(id);
     }
 
     @GetMapping

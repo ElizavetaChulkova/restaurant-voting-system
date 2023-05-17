@@ -19,19 +19,30 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     int delete(@Param("id") int id);
 
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+//    @Cacheable(value = "restaurants", key = "#restaurant.name")
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAllWithMeals();
 
+    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r WHERE r.id=:restId")
+    Restaurant getWithMeals(@Param("restId") int restId);
+
     @Override
     @Transactional
+//    @CachePut(value = "restaurants", key = "#restaurant.name")
     Restaurant save(Restaurant restaurant);
+
+    @Override
+    @Transactional
+//    @CacheEvict(value = "restaurants", key = "#restaurant.name")
+    void delete(Restaurant restaurant);
 
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAll();
 
     @Query("SELECT r.name FROM Restaurant r WHERE r.id=:id")
-    String getRestaurantNameById(@Param("id") int restId);
+    String getNameById(@Param("id") int restId);
 
     @Query("SELECT r FROM Restaurant r WHERE r.id=:id")
-    Restaurant getRestaurantById(@Param("id") int id);
+    Restaurant getById(@Param("id") int id);
 }

@@ -45,8 +45,8 @@ public class RootController {
 
     @GetMapping(value = "/restaurants")
     public ResponseEntity<List<Restaurant>> getRestaurantsWithMeals() {
-        log.info("getRestaurantsWithMeals {}", restaurantRepository.getAllWithMeals());
         List<Restaurant> restaurants = restaurantRepository.getAllWithMeals();
+        log.info("getRestaurantsWithMeals {}", restaurants);
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 }

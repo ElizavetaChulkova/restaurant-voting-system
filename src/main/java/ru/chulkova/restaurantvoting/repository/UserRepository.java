@@ -34,6 +34,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
     @Modifying
     @Transactional
-    @CacheEvict(value = "users", allEntries = true)
     void deleteById(Integer id);
 }

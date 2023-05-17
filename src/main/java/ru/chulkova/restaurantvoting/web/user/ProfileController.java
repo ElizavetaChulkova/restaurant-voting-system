@@ -3,8 +3,6 @@ package ru.chulkova.restaurantvoting.web.user;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,15 +31,13 @@ public class ProfileController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = "users")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
         log.info("delete id = {}", authUser.id());
-        repository.deleteById(authUser.id());
+        repository.delete(authUser.getUser());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CachePut(value = "users")
     public User update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
         log.info("update user with id = {}", authUser.id());
         User oldUser = authUser.getUser();
