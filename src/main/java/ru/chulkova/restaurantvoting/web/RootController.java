@@ -43,7 +43,7 @@ public class RootController {
         return ResponseEntity.created(uriOfNewResource).body(user);
     }
 
-    @GetMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/restaurants")
     public ResponseEntity<List<Restaurant>> getRestaurantsWithMeals() {
         log.info("getRestaurantsWithMeals {}", restaurantRepository.getAllWithMeals());
         List<Restaurant> restaurants = restaurantRepository.getAllWithMeals();

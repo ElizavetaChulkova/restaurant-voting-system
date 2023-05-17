@@ -38,13 +38,13 @@ public class AdminUserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{userId}")
     public UserTo get(@PathVariable("userId") Integer id) {
         log.info("get user {} by id= {}", repository.findById(id), id);
         return UsersUtil.getTo(repository.findById(id).orElseThrow());
     }
 
-    @GetMapping(value = "by-email/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "by-email/{email}")
     public UserTo getByEmail(@PathVariable("email") String email) {
         log.info("get user {} by email= {}", repository.getByEmail(email), email);
         return UsersUtil.getTo(repository.getByEmail(email).orElseThrow());

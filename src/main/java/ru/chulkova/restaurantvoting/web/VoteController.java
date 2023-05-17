@@ -58,7 +58,7 @@ public class VoteController {
         }
     }
 
-    @GetMapping(value = "/all-votes", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all-votes")
     public List<VoteTo> getAllUserVotes(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllUserVotes userId = {}", authUser.id());
         return service.getAllUserVotes(authUser.id());

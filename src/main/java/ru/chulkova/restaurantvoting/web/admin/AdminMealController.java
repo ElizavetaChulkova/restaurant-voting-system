@@ -33,7 +33,7 @@ public class AdminMealController {
     private final MealService service;
     private final RestaurantRepository restaurantRepository;
 
-    @GetMapping(value = "/meals", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/meals")
     public List<MealTo> getAll() {
         log.info("getAllMeals {}", mealRepository.findAll());
         return MealsUtil.getTos(mealRepository.findAll());
@@ -70,7 +70,7 @@ public class AdminMealController {
         service.update(meal, id);
     }
 
-    @GetMapping(value = "/{restaurantId}/meals", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{restaurantId}/meals")
     public List<MealTo> getAllByRestaurantId(@PathVariable("restaurantId") int restId) {
         log.info("getAll meals for restaurant {}", restId);
         return MealsUtil.getTos(mealRepository.getAll(restId));

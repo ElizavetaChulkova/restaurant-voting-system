@@ -31,7 +31,7 @@ public class AdminRestaurantController {
     private final RestaurantRepository repository;
     private final RestaurantService service;
 
-    @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{restaurantId}")
     public RestaurantTo get(@PathVariable("restaurantId") int id) {
         log.info("get restaurant {} by id= {}", repository.findById(id), id);
         return RestaurantsUtil.getTo(repository.findById(id).orElseThrow());
