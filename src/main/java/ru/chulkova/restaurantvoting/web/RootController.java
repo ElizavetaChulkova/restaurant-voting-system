@@ -38,7 +38,7 @@ public class RootController {
         user.setRoles(Set.of(Role.USER));
         user = repository.save(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/profile")
+                .path("/api/account")
                 .build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(user);
     }

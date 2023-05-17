@@ -27,7 +27,7 @@ public class ProfileController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("get {}", authUser);
+        log.info("get id = {}", authUser.id());
         return authUser.getUser();
     }
 
@@ -35,7 +35,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(value = "users")
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("delete {}", authUser);
+        log.info("delete id = {}", authUser.id());
         repository.deleteById(authUser.id());
     }
 
@@ -43,7 +43,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CachePut(value = "users")
     public User update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
-        log.info("update {} to {}", authUser, user);
+        log.info("update user with id = {}", authUser.id());
         User oldUser = authUser.getUser();
         ValidationUtil.assureIdConsistent(user, oldUser.id());
         user.setRoles(oldUser.getRoles());

@@ -33,21 +33,21 @@ public class AdminRestaurantController {
 
     @GetMapping(value = "/{restaurantId}")
     public RestaurantTo get(@PathVariable("restaurantId") int id) {
-        log.info("get restaurant {} by id= {}", repository.findById(id), id);
+        log.info("get restaurant with id = {}", id);
         return RestaurantsUtil.getTo(repository.findById(id).orElseThrow());
     }
 
     @GetMapping
     public ResponseEntity<List<RestaurantTo>> getAll() {
         List<RestaurantTo> rests = RestaurantsUtil.getTos(repository.getAll());
-        log.info("get all restaurants {}", rests);
+        log.info("get all restaurants");
         return new ResponseEntity<>(rests, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("restaurantId") int id) {
-        log.info("delete restaurant {}", id);
+        log.info("delete restaurant by id = {}", id);
         repository.delete(id);
     }
 
@@ -58,7 +58,7 @@ public class AdminRestaurantController {
         log.info("create new restaurant {}", restaurant);
         repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/admin/restaurants/{id}")
+                .path("/api/admin/restaurants/{restaurantId}")
                 .build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(restaurant);
     }
@@ -68,7 +68,7 @@ public class AdminRestaurantController {
     public void update(@Valid @RequestBody Restaurant restaurant,
                        @PathVariable("restaurantId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(restaurant, id);
-        log.info("update restaurant from {} to {}", repository.findById(id), restaurant);
+        log.info("update restaurant with id = {}", id);
         service.update(restaurant, id);
     }
 }

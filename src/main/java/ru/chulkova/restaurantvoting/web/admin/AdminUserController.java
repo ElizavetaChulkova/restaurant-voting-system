@@ -34,26 +34,26 @@ public class AdminUserController {
     @GetMapping
     public ResponseEntity<List<UserTo>> getAll() {
         List<UserTo> users = UsersUtil.getTos(repository.findAll());
-        log.info("get all users {}", users);
+        log.info("get all users");
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{userId}")
     public UserTo get(@PathVariable("userId") Integer id) {
-        log.info("get user {} by id= {}", repository.findById(id), id);
+        log.info("get user by id = {}", id);
         return UsersUtil.getTo(repository.findById(id).orElseThrow());
     }
 
     @GetMapping(value = "by-email/{email}")
     public UserTo getByEmail(@PathVariable("email") String email) {
-        log.info("get user {} by email= {}", repository.getByEmail(email), email);
+        log.info("get user by email = {}", email);
         return UsersUtil.getTo(repository.getByEmail(email).orElseThrow());
     }
 
     @DeleteMapping(value = "/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("userId") int id) {
-        log.info("delete user by id= {}", id);
+        log.info("delete user by id = {}", id);
         repository.deleteById(id);
     }
 
@@ -64,7 +64,7 @@ public class AdminUserController {
         log.info("create new user {}", user);
         repository.save(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/account/{id}")
+                .path("/api/admin/users/{userId}")
                 .build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(UsersUtil.getTo(user));
     }
@@ -73,7 +73,7 @@ public class AdminUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody User user, @PathVariable("userId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(user, id);
-        log.info("update restaurant from {} to {}", repository.findById(id), user);
+        log.info("update restaurant with id = {}", id);
         service.update(user, id);
     }
 }

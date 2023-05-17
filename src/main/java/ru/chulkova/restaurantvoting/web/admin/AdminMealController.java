@@ -35,8 +35,9 @@ public class AdminMealController {
 
     @GetMapping(value = "/meals")
     public List<MealTo> getAll() {
-        log.info("getAllMeals {}", mealRepository.findAll());
-        return MealsUtil.getTos(mealRepository.findAll());
+        List<Meal> meals = mealRepository.findAll();
+        log.info("getAllMeals");
+        return MealsUtil.getTos(meals);
     }
 
     @DeleteMapping("/meals/{mealId}")
@@ -55,7 +56,7 @@ public class AdminMealController {
         meal.setRestaurant(restaurantRepository.findById(restId).orElse(null));
         mealRepository.save(meal);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/admin/restaurants/{id}/meals")
+                .path("/api/admin/restaurants/{restaurantId}/meals")
                 .build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(MealsUtil.getTo(meal));
     }
@@ -66,7 +67,7 @@ public class AdminMealController {
                        @PathVariable("mealId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(meal, id);
         meal.setRestaurant(restaurantRepository.findById(restId).orElseThrow());
-        log.info("update meal {} to {}", mealRepository.findById(id), meal);
+        log.info("update meal with id {}", id);
         service.update(meal, id);
     }
 
