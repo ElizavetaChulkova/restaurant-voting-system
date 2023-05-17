@@ -28,25 +28,37 @@ public class Vote extends BaseEntity implements Serializable {
     @NotNull
     private LocalTime voteTime;
 
-    @Column(name = "user_id", nullable = false)
+//    @Column(name = "user_id", nullable = false)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @NotNull
+//    private Integer userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private Integer userId;
+    private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private Integer restaurantId;
+    private Restaurant restaurant;
 
-    public Vote(Integer id, LocalDate voteDate, LocalTime voteTime, Integer userId, Integer restaurantId) {
-        this(voteDate, voteTime, userId, restaurantId);
+//    @JoinColumn(name = "restaurant_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @NotNull
+//    private Integer restaurantId;
+
+    public Vote(Integer id, LocalDate voteDate, LocalTime voteTime, User user, Restaurant restaurant) {
+        this(voteDate, voteTime, user, restaurant);
         this.id = id;
     }
 
     @Override
     public String toString() {
         return "Vote: " + id + '[' + voteDate + ',' +
-                voteTime + ',' + userId + ',' + restaurantId + ']';
+                voteTime + ',' + user + ',' + restaurant + ']';
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.chulkova.restaurantvoting.model.Vote;
+import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.to.VoteTo;
@@ -30,11 +31,13 @@ public class VoteController {
 
     private final VoteRepository repository;
 
+    private final RestaurantRepository restaurantRepository;
+
     @PostMapping("/{restaurantId}")
     public ResponseEntity<VoteTo> create(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
-                authUser.id(), restId);
+                authUser.getUser(), restaurantRepository.getById(restId));
         ValidationUtil.checkNew(newVote);
         VoteTo voteTo = service.create(newVote);
         log.info("create vote for restId = {}, userId = {}", restId, authUser.id());
@@ -48,7 +51,7 @@ public class VoteController {
         ValidationUtil.assureIdConsistent(vote, vote.id());
         if (vote != null) {
             vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
-            vote.setRestaurantId(restId);
+            vote.setRestaurant(restaurantRepository.getById(restId));
             service.update(vote);
             log.info("update vote userId = {}, restId = {}", authUser.id(), restId);
             return new ResponseEntity<>(service.update(vote), HttpStatus.NO_CONTENT);
@@ -61,6 +64,6 @@ public class VoteController {
     @GetMapping(value = "/all-votes")
     public List<VoteTo> getAllUserVotes(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllUserVotes userId = {}", authUser.id());
-        return service.getAllUserVotes(authUser.id());
+        return service.getTos(repository.getAllUserVotes(authUser.id()));
     }
 }

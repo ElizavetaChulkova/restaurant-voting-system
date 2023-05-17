@@ -25,15 +25,6 @@ public class VoteService {
 
     private final RestaurantRepository restRepo;
 
-    public List<VoteTo> getAllUserVotes(int userId) {
-        List<Vote> userVotes = voteRepo.getAllByUserId(userId);
-        log.info("getAllUserVotes: userId = {}", userId);
-        return userVotes.stream()
-                .map(vote -> new VoteTo(vote.getId(), restRepo.getNameById(vote.getRestaurantId()),
-                        LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime())))
-                .toList();
-    }
-
     @Transactional
     public VoteTo create(Vote vote) {
         Vote newVote = voteRepo.save(vote);
@@ -42,18 +33,22 @@ public class VoteService {
 
     @Transactional
     public VoteTo update(Vote vote) {
-        if (isAbleToChangeVote(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))) {
+        if (isAbleToChange(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))) {
             voteRepo.save(vote);
         } else throw new UnsupportedOperationException("You are not allowed to change your vote");
         return getTo(voteRepo.save(vote));
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(vote.id(), restRepo.getNameById(vote.getRestaurantId()),
+        return new VoteTo(vote.id(), vote.getRestaurant().getName(),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 
-    public static boolean isAbleToChangeVote(LocalTime time) {
+    public List<VoteTo> getTos(List<Vote> votes) {
+        return votes.stream().map(this::getTo).toList();
+    }
+
+    public static boolean isAbleToChange(LocalTime time) {
         if (time.isBefore(NO_CHANGE_TIME)) {
             log.info("allowed to change vote: time = {}", time);
             return true;
