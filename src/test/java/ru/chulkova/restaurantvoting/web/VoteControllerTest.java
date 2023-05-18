@@ -1,6 +1,7 @@
 package ru.chulkova.restaurantvoting.web;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
+import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 
 import java.time.LocalDate;
@@ -31,7 +33,8 @@ class VoteControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
                 user, restaurant);
-        ResultActions result = perform(MockMvcRequestBuilders.post("/api/account/vote/" + 2)
+        ResultActions result = perform(MockMvcRequestBuilders
+                .post("/api/account/vote/" + restaurant.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newVote)))
                 .andExpect(status().isCreated());
@@ -42,11 +45,33 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void updateVoteBeforeDeadline() throws Exception {
-        //need to mock time
+    void update() throws Exception {
         Vote updated = new Vote(VOTE_ID, LocalDate.now(),
-                LocalTime.now(), admin, restaurant);
-        perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
+                LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
+        if (LocalTime.now().isBefore(VoteService.NO_CHANGE_TIME)){
+            perform(MockMvcRequestBuilders.put("/api/account/vote/" + restaurant.id())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(writeValue(updated)))
+                    .andExpect(status().isNoContent());
+            TestUtil.assertEquals(updated, repository.findById(VOTE_ID).orElseThrow());
+        } else {
+            ResultActions resultActions = perform(MockMvcRequestBuilders
+                    .put("/api/account/vote/" + restaurant.id())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(writeValue(updated)))
+                    .andExpect(status().isForbidden());
+            Assertions.assertEquals(resultActions.andReturn().getResolvedException().getMessage(),
+                    "You are not allowed to change your vote after 11 am.");
+        }
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateVoteBeforeDeadline() throws Exception {
+        Assumptions.assumeTrue(LocalTime.now().isBefore(LocalTime.of(11, 0)));
+        Vote updated = new Vote(VOTE_ID, LocalDate.now(),
+                LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
+        perform(MockMvcRequestBuilders.put("/api/account/vote/" + restaurant.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andExpect(status().isNoContent());
@@ -56,10 +81,11 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateVoteAfterDeadline() throws Exception {
-        //need to mock time
+        Assumptions.assumeTrue(LocalTime.now().isAfter(LocalTime.of(11, 0)));
         Vote updated = new Vote(VOTE_ID, LocalDate.now(),
                 LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
-        ResultActions resultActions = perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
+        ResultActions resultActions = perform(MockMvcRequestBuilders
+                .put("/api/account/vote/" + restaurant.id())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andExpect(status().isForbidden());

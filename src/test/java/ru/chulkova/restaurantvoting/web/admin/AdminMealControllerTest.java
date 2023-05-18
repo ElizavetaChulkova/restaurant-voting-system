@@ -31,25 +31,6 @@ class AdminMealControllerTest extends AbstractControllerTest {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-//    @Test
-//    @WithUserDetails(value = ADMIN_MAIL)
-//    void getAll() throws Exception {
-//        perform(MockMvcRequestBuilders.get(ADMIN_MEAL_URL + "/meals"))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-//
-//    }
-
-//    @Test
-//    @WithUserDetails(value = ADMIN_MAIL)
-//    void getAllByRestaurantId() throws Exception {
-//        perform(MockMvcRequestBuilders.get(ADMIN_MEAL_URL + "/" + REST_ID + "/meals"))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-//    }
-
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getForbidden() throws Exception {

@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.chulkova.restaurantvoting.error.VoteCreationException;
 import ru.chulkova.restaurantvoting.error.VoteUpdatingException;
 import ru.chulkova.restaurantvoting.model.Vote;
-import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.to.VoteTo;
 
@@ -26,8 +25,6 @@ public class VoteService {
 
     private final VoteRepository voteRepo;
 
-    private final RestaurantRepository restRepo;
-
     @Transactional
     public VoteTo create(Vote vote) {
         if (isVoteToday(vote.getUser().id())) {
@@ -39,7 +36,8 @@ public class VoteService {
 
     @Transactional
     public VoteTo update(Vote vote) {
-        if (isAbleToChange(LocalTime.now().truncatedTo(ChronoUnit.MINUTES))) {
+        vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
+        if (isAbleToChange(vote.getVoteTime().truncatedTo(ChronoUnit.MINUTES))) {
             voteRepo.save(vote);
         } else throw new VoteUpdatingException("You are not allowed to change your vote after 11 am.");
         return getTo(voteRepo.save(vote));

@@ -19,7 +19,6 @@ import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/admin/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,10 +62,4 @@ public class AdminMealController {
         log.info("update meal with id {}", id);
         service.update(meal, id);
     }
-
-//    @GetMapping(value = "/{restaurantId}/meals")
-//    public List<Meal> getAllByRestaurantId(@PathVariable("restaurantId") int restId) {
-//        log.info("getAll meals for restaurant {}", restId);
-//        return mealRepository.getAll(restId);
-//    }
 }

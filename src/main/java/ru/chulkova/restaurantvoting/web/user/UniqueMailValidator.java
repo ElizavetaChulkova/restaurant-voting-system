@@ -30,14 +30,9 @@ public class UniqueMailValidator implements org.springframework.validation.Valid
         if (StringUtils.hasText(user.getEmail())) {
             repository.getByEmail(user.getEmail())
                     .ifPresent(dbUser -> {
-                        if (request.getMethod().equals("PUT")) {  // UPDATE
+                        if (request.getMethod().equals("PUT")) {
                             int dbId = dbUser.id();
-
-                            // it is ok, if update ourself
                             if (user.getId() != null && dbId == user.id()) return;
-
-                            // Workaround for update with user.id=null in request body
-                            // ValidationUtil.assureIdConsistent called after this validation
                             String requestURI = request.getRequestURI();
                             if (requestURI.endsWith("/" + dbId) || (dbId == SecurityUtil.authId() && requestURI.contains("/profile")))
                                 return;

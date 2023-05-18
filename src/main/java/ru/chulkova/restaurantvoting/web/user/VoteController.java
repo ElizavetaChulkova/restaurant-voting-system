@@ -28,9 +28,7 @@ import java.util.List;
 public class VoteController {
 
     private final VoteService service;
-
     private final VoteRepository repository;
-
     private final RestaurantRepository restaurantRepository;
 
     @PostMapping("/{restaurantId}")
@@ -50,7 +48,6 @@ public class VoteController {
         Vote vote = repository.getByDate(authUser.id(), LocalDate.now()).orElse(null);
         ValidationUtil.assureIdConsistent(vote, vote.id());
         if (vote != null) {
-            vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
             vote.setRestaurant(restaurantRepository.getById(restId));
             service.update(vote);
             log.info("update vote userId = {}, restId = {}", authUser.id(), restId);
