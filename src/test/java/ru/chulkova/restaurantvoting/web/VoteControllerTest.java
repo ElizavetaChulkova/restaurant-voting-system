@@ -42,18 +42,29 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
-    void updateVote() throws Exception {
+    void updateVoteBeforeDeadline() throws Exception {
+        //need to mock time
+        Vote updated = new Vote(VOTE_ID, LocalDate.now(),
+                LocalTime.now(), admin, restaurant);
+        perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(updated)))
+                .andExpect(status().isNoContent());
+        TestUtil.assertEquals(updated, repository.findById(VOTE_ID).orElseThrow());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateVoteAfterDeadline() throws Exception {
+        //need to mock time
         Vote updated = new Vote(VOTE_ID, LocalDate.now(),
                 LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
-        try {
-            perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(writeValue(updated)))
-                    .andExpect(status().isNoContent());
-            TestUtil.assertEquals(updated, repository.findById(VOTE_ID).orElseThrow());
-        } catch (Exception e) {
-            Assertions.assertEquals(e.getCause().getMessage(), "You are not allowed to change your vote");
-        }
+        ResultActions resultActions = perform(MockMvcRequestBuilders.put("/api/account/vote/" + 2)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeValue(updated)))
+                .andExpect(status().isForbidden());
+        Assertions.assertEquals(resultActions.andReturn().getResolvedException().getMessage(),
+                "You are not allowed to change your vote after 11 am.");
     }
 
     @Test

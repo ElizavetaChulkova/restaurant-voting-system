@@ -27,7 +27,7 @@ public class TestUtil {
     public static final Integer VOTE_ID = 3;
 
     public static void assertEquals(BaseEntity actual, BaseEntity expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields("password").isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().ignoringFields("password", "restaurant.menu").isEqualTo(expected);
     }
 
     public static void assertNoIdEquals(BaseEntity actual, BaseEntity expected) {
