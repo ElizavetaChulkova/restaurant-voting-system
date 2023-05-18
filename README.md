@@ -1,6 +1,6 @@
 ## REST API Restaurant Voting System using Hibernate/Spring/SpringMVC without frontend.
 ## Stack
-Spring Boot, Spring Data JPA, Hibernate, Spring MVC, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
+Spring Boot, Spring Data JPA, Hibernate, Spring MVC, Spring Security, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
 
 ##  Technical requirement:
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) **without frontend**.
