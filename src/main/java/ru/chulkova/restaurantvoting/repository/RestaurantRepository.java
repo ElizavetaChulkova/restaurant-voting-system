@@ -1,5 +1,8 @@
 package ru.chulkova.restaurantvoting.repository;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,7 +22,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     int delete(@Param("id") int id);
 
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
-//    @Cacheable(value = "restaurants", key = "#restaurant.name")
+    @Cacheable(value = "restaurants")
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAllWithMeals();
 
@@ -29,19 +32,16 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Override
     @Transactional
-//    @CachePut(value = "restaurants", key = "#restaurant.name")
+    @CachePut(value = "restaurants", key = "#restaurant.name")
     Restaurant save(Restaurant restaurant);
 
     @Override
     @Transactional
-//    @CacheEvict(value = "restaurants", key = "#restaurant.name")
+    @CacheEvict(value = "restaurants", key = "#restaurant.name")
     void delete(Restaurant restaurant);
 
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAll();
-
-    @Query("SELECT r.name FROM Restaurant r WHERE r.id=:id")
-    String getNameById(@Param("id") int restId);
 
     @Query("SELECT r FROM Restaurant r WHERE r.id=:id")
     Restaurant getById(@Param("id") int id);

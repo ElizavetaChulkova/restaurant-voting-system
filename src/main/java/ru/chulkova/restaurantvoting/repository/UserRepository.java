@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u FROM User u WHERE u.email = LOWER(:email)")
-    @Cacheable("users")
+    @Cacheable(value = "users", key = "#email")
     Optional<User> getByEmail(@Param("email") String email);
 
     @Override
