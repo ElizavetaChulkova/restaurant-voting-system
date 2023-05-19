@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.chulkova.restaurantvoting.model.Meal;
+import ru.chulkova.restaurantvoting.model.Restaurant;
 import ru.chulkova.restaurantvoting.repository.MealRepository;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.service.MealService;
@@ -19,6 +20,7 @@ import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(value = "/api/admin/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +47,9 @@ public class AdminMealController {
                                          @PathVariable("restaurantId") int restId) {
         ValidationUtil.checkNew(meal);
         log.info("create new meal {} for restaurant {}", meal, restId);
-        meal.setRestaurant(restaurantRepository.findById(restId).orElse(null));
+        Restaurant restaurant = restaurantRepository.getById(restId);
+        restaurant.setMenuDate(LocalDate.now());
+        meal.setRestaurant(restaurant);
         mealRepository.save(meal);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/admin/restaurants/{restaurantId}/meals")
@@ -58,7 +62,9 @@ public class AdminMealController {
     public void update(@Valid @RequestBody Meal meal, @PathVariable("restaurantId") int restId,
                        @PathVariable("mealId") int id) throws NotFoundException {
         ValidationUtil.assureIdConsistent(meal, id);
-        meal.setRestaurant(restaurantRepository.findById(restId).orElseThrow());
+        Restaurant restaurant = restaurantRepository.getById(restId);
+        restaurant.setMenuDate(LocalDate.now());
+        meal.setRestaurant(restaurant);
         log.info("update meal with id {}", id);
         service.update(meal, id);
     }

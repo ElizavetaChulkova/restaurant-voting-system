@@ -1,8 +1,8 @@
 package ru.chulkova.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,7 +46,6 @@ public class User extends BaseEntity implements Serializable {
     @Size(max = 256)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonDeserialize(using = JsonDeserializers.PasswordDeserializer.class)
-//    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -56,8 +55,7 @@ public class User extends BaseEntity implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
-    @NotNull
-    @JsonIgnore
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<Role> roles;
 
     public User(Integer id, String email, String name, String password, Set<Role> roles) {

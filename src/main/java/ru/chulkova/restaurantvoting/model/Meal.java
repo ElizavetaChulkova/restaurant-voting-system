@@ -15,7 +15,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "meal")
+@Table(name = "meal", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"dish_name", "date"}, name = "one_unique_meal_per_day_idx")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,9 +32,9 @@ public class Meal extends BaseEntity implements Serializable {
     @NotNull
     private String dishName;
 
-    @Column(name = "menu_date")
+    @Column(name = "date")
     @NotNull
-    private LocalDate menuDate;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -41,14 +42,15 @@ public class Meal extends BaseEntity implements Serializable {
     @JsonBackReference
     private Restaurant restaurant;
 
-    public Meal(Integer id, Integer price, String dishName, LocalDate menuDate, Restaurant restaurant) {
-        this(price, dishName, menuDate, restaurant);
+    public Meal(Integer id, Integer price, String dishName,
+                LocalDate date, Restaurant restaurant) {
+        this(price, dishName, date, restaurant);
         this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Dish{" + "name='" + dishName + '\'' + ", date=" + menuDate + ", price=" + price + ", restaurant="
-                + restaurant + '}';
+        return "Dish{" + "name='" + dishName + '\'' + ", date=" +
+                date + ", price=" + price + ", restaurant=" + restaurant + '}';
     }
 }

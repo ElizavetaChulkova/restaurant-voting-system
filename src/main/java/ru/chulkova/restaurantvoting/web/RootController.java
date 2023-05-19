@@ -13,10 +13,13 @@ import ru.chulkova.restaurantvoting.model.Role;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
+import ru.chulkova.restaurantvoting.to.UserTo;
+import ru.chulkova.restaurantvoting.util.UsersUtil;
 import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -32,20 +35,21 @@ public class RootController {
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
+    public ResponseEntity<UserTo> register(@Valid @RequestBody User user) {
         log.info("register {}", user);
-        ValidationUtil.checkNew(user);
         user.setRoles(Set.of(Role.USER));
+        ValidationUtil.checkNew(user);
         user = repository.save(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/account")
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(user);
+        return ResponseEntity.created(uriOfNewResource).body(UsersUtil.getTo(user));
     }
 
     @GetMapping(value = "/restaurants")
     public ResponseEntity<List<Restaurant>> getRestaurantsWithMeals() {
-        List<Restaurant> restaurants = restaurantRepository.getAllWithMeals();
+//        List<Restaurant> restaurants = restaurantRepository.getAllWithMeals();
+        List<Restaurant> restaurants = restaurantRepository.getWithMealsByDate(LocalDate.now());
         log.info("getRestaurantsWithMeals {}", restaurants);
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }

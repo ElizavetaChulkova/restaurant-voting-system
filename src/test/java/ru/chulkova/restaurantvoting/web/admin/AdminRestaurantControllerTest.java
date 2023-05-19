@@ -7,11 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.chulkova.restaurantvoting.model.Meal;
 import ru.chulkova.restaurantvoting.model.Restaurant;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
 import ru.chulkova.restaurantvoting.web.TestUtil;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -63,7 +67,8 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void create() throws Exception {
-        Restaurant newRest = new Restaurant("new rest", null);
+        Restaurant newRest = new Restaurant("new rest", LocalDate.now(), null);
+        newRest.setMenu(List.of(new Meal(111, "dish name", LocalDate.now(), newRest)));
         ResultActions result = perform(MockMvcRequestBuilders.post(ADMIN_REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newRest)))
@@ -77,7 +82,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void update() throws Exception {
-        Restaurant updatedRest = new Restaurant(REST_ID, "updated rest", null);
+        Restaurant updatedRest = new Restaurant(REST_ID, "updated rest", LocalDate.now(), null);
         perform(MockMvcRequestBuilders.put(ADMIN_MEAL_URL + "/" + REST_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updatedRest)))

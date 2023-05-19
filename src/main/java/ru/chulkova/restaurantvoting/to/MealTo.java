@@ -16,11 +16,11 @@ public class MealTo extends BaseTo {
 
     @NotBlank
     @Size(min = 2, max = 100)
-    String dishName;
+    String name;
 
-    public MealTo(Integer id, int price, String dishName) {
+    public MealTo(Integer id, int price, String name) {
         super(id);
         this.price = price;
-        this.dishName = dishName;
+        this.name = name;
     }
 }

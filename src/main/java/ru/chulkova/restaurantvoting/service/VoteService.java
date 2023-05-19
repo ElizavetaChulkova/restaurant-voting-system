@@ -23,6 +23,9 @@ public class VoteService {
 
     public static final LocalTime NO_CHANGE_TIME = LocalTime.of(11, 0);
 
+    public static final String EXCEPTION_MESSAGE = String.format("You are not allowed to change your vote after %s am.",
+            NO_CHANGE_TIME.toString());
+
     private final VoteRepository voteRepo;
 
     @Transactional
@@ -39,12 +42,12 @@ public class VoteService {
         vote.setVoteTime(LocalTime.now().truncatedTo(ChronoUnit.MINUTES));
         if (isAbleToChange(vote.getVoteTime().truncatedTo(ChronoUnit.MINUTES))) {
             voteRepo.save(vote);
-        } else throw new VoteUpdatingException("You are not allowed to change your vote after 11 am.");
+        }
         return getTo(voteRepo.save(vote));
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(vote.id(), vote.getRestaurant().getName(),
+        return new VoteTo(vote.id(), vote.getRestaurant().id(),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 
@@ -56,7 +59,7 @@ public class VoteService {
         if (time.isBefore(NO_CHANGE_TIME)) {
             log.info("allowed to change vote: time = {}", time);
             return true;
-        } else return false;
+        } else throw new VoteUpdatingException(EXCEPTION_MESSAGE);
     }
 
     public boolean isVoteToday(int userId) {

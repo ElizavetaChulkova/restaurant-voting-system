@@ -61,7 +61,7 @@ class VoteControllerTest extends AbstractControllerTest {
                     .content(writeValue(updated)))
                     .andExpect(status().isForbidden());
             Assertions.assertEquals(resultActions.andReturn().getResolvedException().getMessage(),
-                    "You are not allowed to change your vote after 11 am.");
+                    VoteService.EXCEPTION_MESSAGE);
         }
     }
 
@@ -90,7 +90,7 @@ class VoteControllerTest extends AbstractControllerTest {
                 .content(writeValue(updated)))
                 .andExpect(status().isForbidden());
         Assertions.assertEquals(resultActions.andReturn().getResolvedException().getMessage(),
-                "You are not allowed to change your vote after 11 am.");
+                VoteService.EXCEPTION_MESSAGE);
     }
 
     @Test

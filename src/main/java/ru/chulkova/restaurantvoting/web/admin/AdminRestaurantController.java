@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.chulkova.restaurantvoting.model.Meal;
 import ru.chulkova.restaurantvoting.model.Restaurant;
+import ru.chulkova.restaurantvoting.repository.MealRepository;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.service.RestaurantService;
 import ru.chulkova.restaurantvoting.to.RestaurantTo;
@@ -29,6 +31,7 @@ public class AdminRestaurantController {
 
     public static final String ADMIN_REST_URL = "/api/admin/restaurants";
     private final RestaurantRepository repository;
+    private final MealRepository mealRepository;
     private final RestaurantService service;
 
     @GetMapping(value = "/{restaurantId}")
@@ -57,6 +60,8 @@ public class AdminRestaurantController {
         ValidationUtil.checkNew(restaurant);
         log.info("create new restaurant {}", restaurant);
         repository.save(restaurant);
+        List<Meal> newMeals = restaurant.getMenu();
+        mealRepository.saveAll(newMeals);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/admin/restaurants/{restaurantId}")
                 .build().toUri();

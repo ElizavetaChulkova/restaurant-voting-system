@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,13 +29,17 @@ public class Restaurant extends BaseEntity implements Serializable {
     @NotNull
     private String name;
 
+    @Column(name = "menu_date")
+    @NotNull
+    private LocalDate menuDate;
+
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @JsonManagedReference
     private List<Meal> menu;
 
-    public Restaurant(Integer id, String name, List<Meal> menu) {
-        this(name, menu);
+    public Restaurant(Integer id, String name, LocalDate menuDate, List<Meal> menu) {
+        this(name, menuDate, menu);
         this.id = id;
     }
 

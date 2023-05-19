@@ -7,12 +7,12 @@ VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
 
-INSERT INTO RESTAURANT (NAME)
-VALUES ( 'BURO' ),
-       ('Lets carbonara'),
-       ('Dante');
+INSERT INTO RESTAURANT (NAME, MENU_DATE)
+VALUES ( 'BURO', CURRENT_DATE),
+       ('Lets carbonara', CURRENT_DATE),
+       ('Dante', CURRENT_DATE);
 
-INSERT INTO MEAL (DISH_NAME, MENU_DATE, PRICE, RESTAURANT_ID)
+INSERT INTO MEAL (DISH_NAME, DATE, PRICE, RESTAURANT_ID)
 VALUES ('meat balls', CURRENT_DATE, 500, 1),
        ('shrimps carry', '2023-04-18', 800, 1),
        ('carbonara', CURRENT_DATE, 650, 2),

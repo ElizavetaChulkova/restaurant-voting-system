@@ -81,7 +81,8 @@ class AdminUserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void create() throws Exception {
-        User newUser = new User("newemail@gmail.com", "new name", "password", Set.of(Role.USER));
+        User newUser = new User("newemail@gmail.com", "new name",
+                "password", Set.of(Role.USER));
         ResultActions result = perform(MockMvcRequestBuilders.post(ADMIN_USERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newUser)))

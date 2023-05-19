@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.chulkova.restaurantvoting.model.Restaurant;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -25,6 +26,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     @Cacheable(value = "restaurants")
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
     List<Restaurant> getAllWithMeals();
+
+    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT r FROM Restaurant r WHERE r.menuDate=:date")
+    List<Restaurant> getWithMealsByDate(@Param("date") LocalDate date);
 
     @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r WHERE r.id=:restId")
