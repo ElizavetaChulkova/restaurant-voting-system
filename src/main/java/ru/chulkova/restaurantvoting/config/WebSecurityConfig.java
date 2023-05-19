@@ -19,7 +19,7 @@ import ru.chulkova.restaurantvoting.model.Role;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
-import ru.chulkova.restaurantvoting.web.user.AuthUser;
+import ru.chulkova.restaurantvoting.web.AuthUser;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;

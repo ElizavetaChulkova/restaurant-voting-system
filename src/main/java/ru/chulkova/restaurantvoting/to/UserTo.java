@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 import ru.chulkova.restaurantvoting.util.NoHtml;
-import ru.chulkova.restaurantvoting.web.HasIdAndEmail;
+import ru.chulkova.restaurantvoting.HasIdAndEmail;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

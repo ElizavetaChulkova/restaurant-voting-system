@@ -11,6 +11,7 @@ import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.to.UserTo;
 import ru.chulkova.restaurantvoting.util.UsersUtil;
+import ru.chulkova.restaurantvoting.web.AuthUser;
 
 import javax.validation.Valid;
 

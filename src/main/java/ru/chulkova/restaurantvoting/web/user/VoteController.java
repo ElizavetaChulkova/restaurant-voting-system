@@ -15,6 +15,7 @@ import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.to.VoteTo;
+import ru.chulkova.restaurantvoting.web.AuthUser;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

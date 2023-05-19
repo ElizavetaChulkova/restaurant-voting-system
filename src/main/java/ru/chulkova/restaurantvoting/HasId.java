@@ -1,4 +1,4 @@
-package ru.chulkova.restaurantvoting.web;
+package ru.chulkova.restaurantvoting;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.Assert;

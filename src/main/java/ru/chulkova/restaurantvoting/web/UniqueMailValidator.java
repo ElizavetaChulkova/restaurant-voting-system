@@ -1,4 +1,4 @@
-package ru.chulkova.restaurantvoting.web.user;
+package ru.chulkova.restaurantvoting.web;
 
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.util.SecurityUtil;
-import ru.chulkova.restaurantvoting.web.HasIdAndEmail;
+import ru.chulkova.restaurantvoting.HasIdAndEmail;
 
 import javax.servlet.http.HttpServletRequest;
 

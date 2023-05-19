@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
-import ru.chulkova.restaurantvoting.web.HasId;
+import ru.chulkova.restaurantvoting.HasId;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;

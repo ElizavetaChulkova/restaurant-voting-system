@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.chulkova.restaurantvoting.web.HasId;
+import ru.chulkova.restaurantvoting.HasId;
 
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

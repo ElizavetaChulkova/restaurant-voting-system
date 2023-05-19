@@ -1,4 +1,4 @@
-package ru.chulkova.restaurantvoting.web.user;
+package ru.chulkova.restaurantvoting.web;
 
 import lombok.Getter;
 import lombok.ToString;

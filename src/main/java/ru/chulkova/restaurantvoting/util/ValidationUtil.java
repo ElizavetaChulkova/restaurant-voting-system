@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import ru.chulkova.restaurantvoting.error.IllegalRequestDataException;
-import ru.chulkova.restaurantvoting.web.HasId;
+import ru.chulkova.restaurantvoting.HasId;
 
 @UtilityClass
 @Slf4j
