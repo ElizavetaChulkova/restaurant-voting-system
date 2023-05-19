@@ -32,12 +32,12 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Override
     @Transactional
-    @CachePut(value = "restaurants", key = "#restaurant.name")
+    @CachePut(value = "restaurants", key = "#restaurant.id")
     Restaurant save(Restaurant restaurant);
 
     @Override
     @Transactional
-    @CacheEvict(value = "restaurants", key = "#restaurant.name")
+    @CacheEvict(value = "restaurants", key = "#restaurant.id")
     void delete(Restaurant restaurant);
 
     @Query("SELECT r FROM Restaurant r ORDER BY r.name")
