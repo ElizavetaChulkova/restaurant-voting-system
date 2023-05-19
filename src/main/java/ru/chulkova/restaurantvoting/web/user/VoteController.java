@@ -46,7 +46,6 @@ public class VoteController {
     public ResponseEntity<VoteTo> update(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote vote = repository.getByDate(authUser.id(), LocalDate.now()).orElse(null);
-        ValidationUtil.assureIdConsistent(vote, vote.id());
         if (vote != null) {
             vote.setRestaurant(restaurantRepository.getById(restId));
             service.update(vote);

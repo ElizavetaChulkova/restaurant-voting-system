@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
@@ -56,6 +57,7 @@ public class User extends BaseEntity implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn
     @NotNull
+    @JsonIgnore
     private Set<Role> roles;
 
     public User(Integer id, String email, String name, String password, Set<Role> roles) {

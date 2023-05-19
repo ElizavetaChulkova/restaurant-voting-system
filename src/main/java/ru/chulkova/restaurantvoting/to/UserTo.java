@@ -1,5 +1,6 @@
 package ru.chulkova.restaurantvoting.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
@@ -28,6 +29,7 @@ public class UserTo extends BaseTo implements HasIdAndEmail {
 
     @NotBlank
     @Size(min = 5, max = 32)
+    @JsonIgnore
     String password;
 
     public UserTo(Integer id, String name, String email, String password) {
