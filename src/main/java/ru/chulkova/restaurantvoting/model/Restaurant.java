@@ -1,6 +1,6 @@
 package ru.chulkova.restaurantvoting.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +35,7 @@ public class Restaurant extends BaseEntity implements Serializable {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @JsonManagedReference
+    @ApiModelProperty(hidden = true)
     private List<Meal> menu;
 
     public Restaurant(Integer id, String name, LocalDate menuDate, List<Meal> menu) {

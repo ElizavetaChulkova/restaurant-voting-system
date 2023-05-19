@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
 import ru.chulkova.restaurantvoting.web.HasId;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 
@@ -21,6 +22,7 @@ public abstract class BaseEntity implements Persistable<Integer>, HasId {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @ApiModelProperty(hidden = true)
     protected Integer id;
 
     public int id() {
