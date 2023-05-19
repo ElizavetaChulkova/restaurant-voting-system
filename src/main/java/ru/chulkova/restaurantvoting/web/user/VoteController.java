@@ -3,11 +3,13 @@ package ru.chulkova.restaurantvoting.web.user;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.chulkova.restaurantvoting.error.NoVoteAtDateException;
 import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/account/vote", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,5 +64,15 @@ public class VoteController {
     public List<VoteTo> getAllUserVotes(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllUserVotes userId = {}", authUser.id());
         return service.getTos(repository.getAllUserVotes(authUser.id()));
+    }
+
+    @GetMapping(value = "/by-date")
+    public VoteTo getByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                            @AuthenticationPrincipal AuthUser authUser) {
+        log.info("getVoteByDate date = {}", date);
+        Optional<Vote> vote = repository.getByDate(authUser.id(), date);
+        if (vote.isEmpty()) {
+            throw new NoVoteAtDateException("You didn't vote at this date");
+        } else return service.getTo(vote.get());
     }
 }

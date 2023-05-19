@@ -47,7 +47,7 @@ public class VoteService {
     }
 
     public VoteTo getTo(Vote vote) {
-        return new VoteTo(vote.id(), vote.getRestaurant().id(),
+        return new VoteTo(vote.id(), vote.getRestaurant().getId(),
                 LocalDateTime.of(vote.getVoteDate(), vote.getVoteTime()));
     }
 
