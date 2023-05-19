@@ -33,7 +33,7 @@ public class AdminUserController {
 
     @GetMapping
     public ResponseEntity<List<UserTo>> getAll() {
-        List<UserTo> users = UsersUtil.getTos(repository.findAll());
+        List<UserTo> users = UsersUtil.getTos(repository.getAll());
         log.info("get all users");
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class AdminUserController {
     @GetMapping(value = "/{userId}")
     public UserTo get(@PathVariable("userId") Integer id) {
         log.info("get user by id = {}", id);
-        return UsersUtil.getTo(repository.findById(id).orElseThrow());
+        return UsersUtil.getTo(repository.getExisted(id));
     }
 
     @GetMapping(value = "by-email/{email}")
@@ -54,7 +54,7 @@ public class AdminUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("userId") int id) {
         log.info("delete user by id = {}", id);
-        repository.deleteById(id);
+        repository.deleteExisted(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

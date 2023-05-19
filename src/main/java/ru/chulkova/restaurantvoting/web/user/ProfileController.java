@@ -9,9 +9,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
-import ru.chulkova.restaurantvoting.util.ValidationUtil;
+import ru.chulkova.restaurantvoting.to.UserTo;
+import ru.chulkova.restaurantvoting.util.UsersUtil;
 
 import javax.validation.Valid;
+
+import static ru.chulkova.restaurantvoting.util.ValidationUtil.assureIdConsistent;
 
 @RestController
 @RequestMapping(value = ProfileController.URL)
@@ -38,14 +41,14 @@ public class ProfileController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public User update(@Valid @RequestBody User user, @AuthenticationPrincipal AuthUser authUser) {
+    public void update(@Valid @RequestBody UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
         log.info("update user with id = {}", authUser.id());
-        User oldUser = authUser.getUser();
-        ValidationUtil.assureIdConsistent(user, oldUser.id());
-        user.setRoles(oldUser.getRoles());
-        if (user.getPassword() == null) {
-            user.setPassword(oldUser.getPassword());
-        }
-        return repository.save(user);
+        assureIdConsistent(userTo, authUser.id());
+        User user = authUser.getUser();
+        prepareAndSave(UsersUtil.updateFromTo(user, userTo));
+    }
+
+    protected User prepareAndSave(User user) {
+        return repository.save(UsersUtil.prepareToSave(user));
     }
 }

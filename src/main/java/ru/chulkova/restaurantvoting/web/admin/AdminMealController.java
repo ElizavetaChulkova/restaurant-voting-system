@@ -16,7 +16,6 @@ import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.service.MealService;
 import ru.chulkova.restaurantvoting.to.MealTo;
 import ru.chulkova.restaurantvoting.util.MealsUtil;
-import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -45,9 +44,8 @@ public class AdminMealController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<MealTo> create(@Valid @RequestBody Meal meal,
                                          @PathVariable("restaurantId") int restId) {
-        ValidationUtil.checkNew(meal);
         log.info("create new meal {} for restaurant {}", meal, restId);
-        Restaurant restaurant = restaurantRepository.getById(restId);
+        Restaurant restaurant = restaurantRepository.getExisted(restId);
         restaurant.setMenuDate(LocalDate.now());
         meal.setRestaurant(restaurant);
         mealRepository.save(meal);
@@ -61,8 +59,7 @@ public class AdminMealController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Meal meal, @PathVariable("restaurantId") int restId,
                        @PathVariable("mealId") int id) throws NotFoundException {
-        ValidationUtil.assureIdConsistent(meal, id);
-        Restaurant restaurant = restaurantRepository.getById(restId);
+        Restaurant restaurant = restaurantRepository.getExisted(restId);
         restaurant.setMenuDate(LocalDate.now());
         meal.setRestaurant(restaurant);
         log.info("update meal with id {}", id);

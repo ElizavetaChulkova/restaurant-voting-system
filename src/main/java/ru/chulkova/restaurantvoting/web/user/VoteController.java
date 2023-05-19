@@ -15,7 +15,6 @@ import ru.chulkova.restaurantvoting.repository.RestaurantRepository;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.to.VoteTo;
-import ru.chulkova.restaurantvoting.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -38,8 +37,7 @@ public class VoteController {
     public ResponseEntity<VoteTo> create(@PathVariable("restaurantId") int restId,
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote newVote = new Vote(LocalDate.now(), LocalTime.now().truncatedTo(ChronoUnit.MINUTES),
-                authUser.getUser(), restaurantRepository.getById(restId));
-        ValidationUtil.checkNew(newVote);
+                authUser.getUser(), restaurantRepository.get(restId));
         VoteTo voteTo = service.create(newVote);
         log.info("create vote for restId = {}, userId = {}", restId, authUser.id());
         return new ResponseEntity<>(voteTo, HttpStatus.CREATED);
@@ -50,7 +48,7 @@ public class VoteController {
                                          @AuthenticationPrincipal AuthUser authUser) {
         Vote vote = repository.getByDate(authUser.id(), LocalDate.now()).orElse(null);
         if (vote != null) {
-            vote.setRestaurant(restaurantRepository.getById(restId));
+            vote.setRestaurant(restaurantRepository.get(restId));
             service.update(vote);
             log.info("update vote userId = {}, restId = {}", authUser.id(), restId);
             return new ResponseEntity<>(service.update(vote), HttpStatus.NO_CONTENT);

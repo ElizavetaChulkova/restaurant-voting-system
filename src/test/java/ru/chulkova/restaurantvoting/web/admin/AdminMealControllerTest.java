@@ -17,7 +17,6 @@ import ru.chulkova.restaurantvoting.web.TestUtil;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.chulkova.restaurantvoting.util.JsonUtil.writeValue;
 import static ru.chulkova.restaurantvoting.web.TestUtil.*;
@@ -51,7 +50,7 @@ class AdminMealControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void create() throws Exception {
         Meal newMeal = new Meal(null, 222, "new meal",
-                LocalDate.of(2023, 2, 10), restaurantRepository.getById(REST_ID));
+                LocalDate.of(2023, 2, 10), restaurantRepository.get(REST_ID));
         ResultActions result = perform(MockMvcRequestBuilders
                 .post(ADMIN_MEAL_URL + "/" + REST_ID)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
+import ru.chulkova.restaurantvoting.error.IllegalRequestDataException;
 import ru.chulkova.restaurantvoting.web.HasId;
 
 @UtilityClass
@@ -29,6 +30,19 @@ public class ValidationUtil {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
         }
+    }
+
+    public static void checkModification(int count, int id) {
+        if (count == 0) {
+            throw new IllegalRequestDataException("Entity with id=" + id + " not found");
+        }
+    }
+
+    public static <T> T checkExisted(T obj, int id) {
+        if (obj == null) {
+            throw new IllegalRequestDataException("Entity with id=" + id + " not found");
+        }
+        return obj;
     }
 
     public static void checkNew(HasId entity) {
