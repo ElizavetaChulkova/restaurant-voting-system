@@ -1,4 +1,4 @@
-package ru.chulkova.restaurantvoting.web;
+package ru.chulkova.restaurantvoting.web.user;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
@@ -12,6 +12,8 @@ import ru.chulkova.restaurantvoting.model.Vote;
 import ru.chulkova.restaurantvoting.repository.VoteRepository;
 import ru.chulkova.restaurantvoting.service.VoteService;
 import ru.chulkova.restaurantvoting.util.JsonUtil;
+import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
+import ru.chulkova.restaurantvoting.web.TestUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,7 +50,7 @@ class VoteControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         Vote updated = new Vote(VOTE_ID, LocalDate.now(),
                 LocalTime.now().truncatedTo(ChronoUnit.MINUTES), admin, restaurant);
-        if (LocalTime.now().isBefore(VoteService.NO_CHANGE_TIME)){
+        if (LocalTime.now().isBefore(VoteService.NO_CHANGE_TIME)) {
             perform(MockMvcRequestBuilders.put("/api/account/vote/" + restaurant.id())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(writeValue(updated)))
@@ -100,5 +102,15 @@ class VoteControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    @WithUserDetails(value = TestUtil.USER_MAIL)
+    void getByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get("/api/account/vote/by-date")
+                .param("date", "2023-02-10"))
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

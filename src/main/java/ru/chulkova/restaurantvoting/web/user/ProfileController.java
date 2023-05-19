@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
 import ru.chulkova.restaurantvoting.to.UserTo;
-import ru.chulkova.restaurantvoting.util.UsersUtil;
 import ru.chulkova.restaurantvoting.web.AuthUser;
 
 import javax.validation.Valid;
 
+import static ru.chulkova.restaurantvoting.config.WebSecurityConfig.PASSWORD_ENCODER;
 import static ru.chulkova.restaurantvoting.util.ValidationUtil.assureIdConsistent;
 
 @RestController
@@ -46,10 +46,9 @@ public class ProfileController {
         log.info("update user with id = {}", authUser.id());
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
-        prepareAndSave(UsersUtil.updateFromTo(user, userTo));
-    }
-
-    protected User prepareAndSave(User user) {
-        return repository.save(UsersUtil.prepareToSave(user));
+        user.setName(userTo.getName());
+        user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
+        user.setEmail(user.getEmail().toLowerCase());
+        repository.save(user);
     }
 }

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
-import ru.chulkova.restaurantvoting.util.NoHtml;
 import ru.chulkova.restaurantvoting.HasIdAndEmail;
+import ru.chulkova.restaurantvoting.util.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -27,7 +27,6 @@ public class UserTo extends BaseTo implements HasIdAndEmail {
     @NoHtml
     String email;
 
-    @NotBlank
     @Size(min = 5, max = 32)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;

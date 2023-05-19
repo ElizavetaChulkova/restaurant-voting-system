@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.chulkova.restaurantvoting.model.Role;
 import ru.chulkova.restaurantvoting.model.User;
 import ru.chulkova.restaurantvoting.repository.UserRepository;
+import ru.chulkova.restaurantvoting.to.UserTo;
 import ru.chulkova.restaurantvoting.web.AbstractControllerTest;
 import ru.chulkova.restaurantvoting.web.TestUtil;
 
@@ -54,14 +55,16 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void update() throws Exception {
-        User updated = new User(USER_ID, "newemail@gmailcom", "new name",
-                "newpassword", Set.of(Role.USER));
+        UserTo updated = new UserTo(USER_ID, "new name", USER_MAIL,
+                "newPassword");
         perform(MockMvcRequestBuilders.put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(updated)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        TestUtil.assertEquals(updated, userRepository.findById(USER_ID).orElseThrow());
+        User user = new User(USER_ID, updated.getEmail(),
+                updated.getName(), updated.getPassword(), Set.of(Role.USER));
+        TestUtil.assertEquals(user, userRepository.getExisted(USER_ID));
     }
 
     @Test
