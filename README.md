@@ -2,6 +2,8 @@
 ## Stack
 Spring Boot, Spring Data JPA, Hibernate, Spring MVC, Spring Security, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
 
+## Application is available at : <a href="http://188.225.11.14:8081/api/root/restaurants">restaurants-voting</a>
+
 ##  Technical requirement:
 Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) **without frontend**.
 
@@ -26,4 +28,4 @@ As a result, provide a link to github repository. It should contain the code, RE
 P.S.: Make sure everything works with latest version that is on github :)  
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
 
-### Swagger documentation <a href="http://localhost:8080/swagger-ui.html">swagger-ui</a>
+### Swagger documentation <a href="http://188.225.11.14:8081/swagger-ui.html">swagger-ui</a>
