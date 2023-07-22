@@ -48,3 +48,5 @@ logging:
     root: WARN
     ru.chulkova.ru.chulkova.restaurantvoting.: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+server:
+  port : 8081
